@@ -1,0 +1,27 @@
+{
+  "name": "ivis-group-project",
+  "version": "1.0.0",
+  "description": "Group project in the course Information Visualization (DH2321) 2020 by group 6.",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gits-15.sys.kth.se:pgorgis/ivis-group-project.git"
+  },
+  "author": "Group 6 in DH2321 2020",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "concurrently": "^5.1.0",
+    "express": "^4.17.1",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
