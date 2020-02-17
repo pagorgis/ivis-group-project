@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": ,
+        "position": ,
+        "dept": ,
+        "kontering": ,
+        "gru_vt": ,
+        "gru_ht": ,
+        "vt_courses": [
+            {
+                "course_id": ,
+                "course_code": ,
+                "course_name": ,
+                "percentage": ,
+            }
+        ],
+        "ht_courses": [
+            {
+                "course_id": ,
+                "course_code": ,
+                "course_name": ,
+                "percentage": ,
+            }
+        ],
+        "self_dev": ,
+        "gru_balance_19": ,
+        "extra":
+    }
+]
