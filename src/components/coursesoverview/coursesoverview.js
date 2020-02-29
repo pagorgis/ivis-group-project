@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './coursesoverview.css';
+import * as d3 from "d3";
 
 class CoursesOverview extends Component {
   constructor() {
@@ -12,7 +13,7 @@ class CoursesOverview extends Component {
   render() {
     return (
       <div className="coursesoverview">
-          This is courses overview
+          This is courses overview component
       </div>
     );
   }

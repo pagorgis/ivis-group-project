@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.4.1",
     "create-react-app": "^3.4.0",
+    "d3": "^5.15.0",
     "firebase": "^7.9.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

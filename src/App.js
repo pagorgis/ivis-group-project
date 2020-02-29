@@ -5,6 +5,7 @@ import TeachersOverview from './components/teachersoverview/teachersoverview';
 import CoursesOverview from './components/coursesoverview/coursesoverview';
 import TeacherDetails from './components/teacherdetails/teacherdetails';
 import CourseDetails from './components/coursedetails/coursedetails';
+//import * as d3 from "d3";
 
 
 class App extends Component {
@@ -31,6 +32,9 @@ class App extends Component {
   render() {
     return(
         <div className="App">
+          <div className="staffiz-banner">
+            <h1 className="staffiz-title">Staffiz</h1>
+          </div>
           <div className="flex-container">
             <div className="flex-1">
               <div className="overview-bar">
