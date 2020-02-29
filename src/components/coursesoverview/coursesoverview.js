@@ -13,7 +13,7 @@ class CoursesOverview extends Component {
   render() {
     return (
       <div className="coursesoverview">
-        This is courses overview component
+        This is courses overview componenta
       </div>
     );
   }
