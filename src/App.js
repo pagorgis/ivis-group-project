@@ -15,10 +15,17 @@ class App extends Component {
     this.state = {
       tab: "teachers",
       active_teacher: null,
-      active_course: null
+      active_course: null,
+      //teachers_data: require('./data/Teachers.json'),
+      //courses_data: require('./data/Courses.json')
     }
 
     this.handleOverviewChange = this.handleOverviewChange.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(this.state.courses_data);
+    console.log(this.state.teachers_data);
   }
 
   handleOverviewChange(tab) {
@@ -35,12 +42,12 @@ class App extends Component {
           <div className="staffiz-banner">
             <h1 className="staffiz-title">Staffiz</h1>
           </div>
+          <div className="overview-bar">
+            <h2 className={this.state.tab === "teachers" ? "teachers-tab active" : "teachers-tab"} onClick={() => this.handleOverviewChange("courses")}>Teachers</h2>
+            <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
+          </div>
           <div className="flex-container">
             <div className="flex-1">
-              <div className="overview-bar">
-                <h2 className={this.state.tab === "teachers" ? "teachers-tab active" : "teachers-tab"} onClick={() => this.handleOverviewChange("courses")}>Teachers</h2>
-                <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
-              </div>
               {this.state.tab === "teachers" ? <TeachersOverview /> : null}
               {this.state.tab === "courses" ? <CoursesOverview /> : null}
             </div>
