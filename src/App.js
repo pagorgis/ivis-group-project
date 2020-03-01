@@ -52,7 +52,7 @@ class App extends Component {
               {this.state.tab === "courses" ? <CoursesOverview /> : null}
             </div>
             <div className="flex-2">
-              <TeacherDetails />
+              <TeacherDetails/>
               <CourseDetails />
             </div>
           </div>
