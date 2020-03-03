@@ -12,13 +12,13 @@ import {
   scaleLinear,
   scaleOrdinal,
   mouse,
+  event,
   axisLeft,
+  json,
 } from "d3";
 import Teachers from "../data/Teachers.json";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Row, Dropdown} from "react-bootstrap";
-
-
 
 
   const keys = ["penalty", "gru_ht", "gru_vt","self_dev","extra","unplanned"];
@@ -29,7 +29,7 @@ import {Row, Dropdown} from "react-bootstrap";
     "gru_vt": "rgb(54, 98, 244)",
     "self_dev": "#FFEB3B",
     "extra": "#4CAF50",
-    "unplanned":"grey"
+    "unplanned":"white"
   };
 /**
  * Component that renders a StackedBarChart
@@ -50,7 +50,7 @@ function StackedBar(inputId) {
         startFromPenalty=tearcherData.gru_balance_19;
     }
 
-    var rest=(tearcherData.kontering-tearcherData.gru_ht-tearcherData.gru_vt-tearcherData.self_dev).toFixed(2);
+    var rest=(tearcherData.kontering-startFromPenalty-tearcherData.gru_ht-tearcherData.gru_vt-tearcherData.self_dev).toFixed(2);
     const checkRest=(rest)=>{
         if(rest>0){
             return rest;
@@ -58,12 +58,11 @@ function StackedBar(inputId) {
             return 0;
         }
     }
-    console.log(checkRest(rest));
-
 
     const data = [
         {penalty: penalty, gru_ht: tearcherData.gru_ht, gru_vt: tearcherData.gru_vt, self_dev: tearcherData.self_dev,extra:tearcherData.extra,unplanned:checkRest(rest)},
       ];
+
   // will be called initially and on every data change
   useEffect(() => {
     var series = stack()
@@ -92,7 +91,6 @@ var tooltip = select("#myVis" )
 .append("div")
 .style("opacity", 0)
 .attr("class", "tooltip")
-.style("position", "absolute")
 .style("background-color", "white")
 .style("border", "solid")
 .style("border-width", "1px")
@@ -104,24 +102,54 @@ var tooltip = select("#myVis" )
 // Three function that change the tooltip when user hover / move / leave a cell
 var mouseover = function(d) {
 tooltip
-    .html(((d[1]-d[0]).toFixed(2)+"%"))
+   .html(((d[1]-d[0]).toFixed(2)+"%"))
     .style("opacity", 1)
 select(this)
       .style("stroke", "black")
       .style("stroke-width", 3)
       .style("stroke-opacity", 0.7)
 }
+
+var mouseoverPenalty = function(d) {
+  tooltip
+     .html(("Penalty: "+(tearcherData.gru_balance_19).toFixed(2)+"%"))
+      .style("opacity", 1)
+  select(this)
+        .style("stroke", "black")
+        .style("stroke-width", 3)
+        .style("stroke-opacity", 0.7)
+  }
+
+  var mouseoverKontering = function(d) {
+    tooltip
+       .html(("Kontering: "+(tearcherData.kontering).toFixed(2)+"%"))
+        .style("opacity", 1)
+    select(this)
+          .style("stroke", "black")
+          .style("stroke-width", 3)
+          .style("stroke-opacity", 0.7)
+    }
+
 var mousemove = function(d) {
 tooltip
-  .style("left", (mouse(this)[0])+700 + "px") 
-  .style("top", (mouse(this)[1])+250 + "px")
+  .style("left", (event.pageX+"px"))
+  .style("top", (event.pageY+30+"px"))
 }
 var mouseleave = function(d) {
 tooltip
   .style("opacity", 0)
 select(this)
-  .style("stroke", "none")
+.style("stroke", "black")
+.style("stroke-width", 1)
+.style("stroke-opacity", 1)
 }
+
+var mouseleavePenalty = function(d) {
+  tooltip
+    .style("opacity", 0)
+  select(this)
+  .style("stroke", "none")
+  }
 
 svg.append("g")
   .selectAll("g")
@@ -131,12 +159,15 @@ svg.append("g")
   .selectAll("rect")
   .data(function(d) { return d; })
   .enter().append("rect")
-    .attr("height", 18)
+    .attr("height", 22)
     .attr("y", function(d) { return y(d.data.month); })
     .attr("x", function(d) { 
       if(hasPenalty){
         return x((d[0]+tearcherData.gru_balance_19));
       }else{return x(d[0]); }})
+      .style("stroke", "black")
+      .style("stroke-width", 1)
+      .style("stroke-opacity", 1)
     .attr("width", function(d) { return x(d[1]) - x(d[0]); })
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
@@ -148,30 +179,40 @@ svg.append("g")
 
 const lineEnd = tearcherData.kontering;
 
-const line = svg.append("line")
-  .attr("x1", function(){ return x(lineEnd)})
-  .attr("x2", function(){ return x(lineEnd)})
-  .attr("y1", margin.top-50)
-  .attr("y2", margin.bottom+20)
-  .attr("stroke-width", 4)
-  .attr("stroke", "black")
+  const konteringRect = svg.append("rect")
+  .attr("height", 60)
+  .attr("y", function(d) { return margin.top-10; })
+  .attr("x", function(d) { return x(lineEnd)})
+  .attr("width", 5)
+  .attr("fill","black")
+  .on("mouseover", mouseoverKontering)
+  .on("mousemove", mousemove)
+  .on("mouseleave", mouseleavePenalty);
 
-  var myText =  svg.append("text")
-  .attr("y", margin.bottom+40)
-  .attr("x", function(){ return x(lineEnd)})
-  .attr('text-anchor', 'middle')
-  .attr("class", "myLabel")
-  .text("Kontering");
+  // var myText =  svg.append("text")
+  // .attr("y", margin.bottom+40)
+  // .attr("x", function(){ return x(lineEnd)})
+  // .attr('text-anchor', 'middle')
+  // .attr("class", "myLabel")
+  // .text("Kontering");
+
+  const penaltyRect = svg.append("rect")
+  .attr("height", 8)
+  .attr("y", function(d) { return margin.bottom+7; })
+  .attr("x", function(d) { return x(tearcherData.gru_balance_19)})
+  .attr("width", function(d) { return x(0)-x(startFromPenalty); })
+  .attr("fill","red")
+  .on("mouseover", mouseoverPenalty)
+  .on("mousemove", mousemove)
+  .on("mouseleave", mouseleavePenalty);
   
   }, [colors, data,keys]);
-
 
 
   return (
     <React.Fragment>
       <Row>
     <div className="profile">
-            {/* <img src="/images/Profile.png" alt="" /> */}
           <div className="heading-box">
             <h1 style={{ width: '10rem' },{fontSize: "1.5rem"}} >{tearcherData.name}</h1>
             <h3 style={{ width: '10rem' },{fontSize: "1rem"}} >{tearcherData.position}, {tearcherData.dept}</h3>
@@ -186,6 +227,7 @@ const line = svg.append("line")
         <Dropdown.Item href="#/action-1"><div className="box" id="yellow-box" style={{marginRight: 20 + 'px'}}></div>Self-development</Dropdown.Item>
         <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
         <Dropdown.Item href="#/action-1"><div className="box" id="grey-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
+        <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
       </Dropdown.Menu>
     </Dropdown>
           </div>

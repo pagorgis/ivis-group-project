@@ -12,7 +12,7 @@ class TeacherDetails extends Component {
   }
 
   render() {
-    const id=1;
+    const id=10;  //teacher id
     return (
       <div className="teacherdetails">
         This is teacher details component
