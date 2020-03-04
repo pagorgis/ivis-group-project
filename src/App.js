@@ -24,8 +24,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.courses_data);
-    console.log(this.state.teachers_data);
+    //console.log(this.state.courses_data);
+    //console.log(this.state.teachers_data);
   }
 
   handleOverviewChange(tab) {
