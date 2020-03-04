@@ -15,10 +15,13 @@ class TeachersOverview extends Component {
     console.log(this.state.teachers_data);
     let myBubbleChart = this.bubbleChart();
     myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
-    this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
+    //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
   }
 
   bubbleChart() {
+    const rawData = this.state.teachers_data;
+    let teachersNames = this.teachersNames(rawData);
+    let coursesCodes = this.coursesCodes(rawData);
     // Constants for sizing
     var width = 730;
     var height = 700;
@@ -80,8 +83,8 @@ class TeachersOverview extends Component {
   
     // Sizes bubbles based on their area instead of raw radius
     var radiusScale = d3.scalePow()
-      .exponent(0.6)
-      .range([1, 100]);
+        .exponent(0.6)
+        .range([1, 100]);
   
     /*
      * This data manipulation function takes the raw data from
@@ -109,6 +112,8 @@ class TeachersOverview extends Component {
           filterState: 0,
           position: d.position,
           department: d.dept,
+          vt_courses: d.vt_courses,
+          ht_courses: d.ht_courses,
           x: Math.random() * 900,
           y: Math.random() * 800
         };
@@ -158,10 +163,10 @@ class TeachersOverview extends Component {
       // Create a SVG element inside the provided selector
       // with desired size.
       svg = d3.select(selector)
-        .append('svg')
-        .attr('id', "teachersoverview_svgTeachersOverview")
-        .attr('width', width)
-        .attr('height', height)
+          .append('svg')
+          .attr('id', "teachersoverview_svgTeachersOverview")
+          .attr('width', width)
+          .attr('height', height)
   
       var elem = svg.selectAll("g")
           .data(nodes, function (d) { return d.id; });
@@ -173,33 +178,33 @@ class TeachersOverview extends Component {
       // There will be one circle.bubble for each object in the nodes array.
       // Initially, their radius (r attribute) will be 0.
       elemEnter.append('circle')
-        .classed('bubble', true)
-        .attr('r', 0)
-        .data(nodes, function (d) { return d.id; })
-        .attr('fill', function(d){
-          if (d.value>0){return '#60B766'}
-          else if (d.value<0){return "#DC2F2F"}
-          else return '#5D41E6';
-        })
-        .attr('stroke', function(d){
-          if (d.value>0){return '#386C3B'}
-          else if (d.value<0){return "#801B1B"}
-          else return '#332480';
-        })
-        .attr('stroke-width', 2)
-        .on('mouseover', showDetail)
-        .on('mouseout', hideDetail)
-        .on('click', selectTeacherByClick);
+          .classed('teachersoverview_bubble', true)
+          .attr('r', 0)
+          .data(nodes, function (d) { return d.id; })
+          .attr('fill', function(d){
+            if (d.value>0){return '#60B766'}
+            else if (d.value<0){return "#DC2F2F"}
+            else return '#5D41E6';
+          })
+          .attr('stroke', function(d){
+            if (d.value>0){return '#386C3B'}
+            else if (d.value<0){return "#801B1B"}
+            else return '#332480';
+          })
+          .attr('stroke-width', 2)
+          .on('mouseover', showDetail)
+          .on('mouseout', hideDetail)
+          .on('click', selectTeacherByClick);
   
-      bubbles = svg.selectAll('.bubble')
+      bubbles = svg.selectAll('.teachersoverview_bubble')
   
       groups = svg.selectAll('g');
   
       // Fancy transition to make bubbles appear, ending with the
       // correct radius
       bubbles.transition()
-        .duration(2000)
-        .attr('r', function (d) { return d.radius; });
+          .duration(2000)
+          .attr('r', function (d) { return d.radius; });
   
       // Set the simulation's nodes to our newly created nodes array.
       // @v4 Once we set the nodes, the simulation will start running automatically!
@@ -207,9 +212,6 @@ class TeachersOverview extends Component {
   
       // Set initial layout to single group.
       groupBubbles();
-  
-      d3.select("#teachersoverview_teacherSearchButton")
-          .on('click',selectTeacherBySearch);
   
       d3.select("#teachersoverview_filterButton")
           .on('click',function(){
@@ -227,6 +229,8 @@ class TeachersOverview extends Component {
             document.getElementById("teachersoverview_filterMenu").style.display = "none";
             document.getElementById("teachersoverview_filterMinValue").value="";
             document.getElementById("teachersoverview_filterMaxValue").value="";
+            document.getElementById("teachersoverview_filterCourseValue").value="";
+  
   
             var filterPositionElement = document.getElementById("teachersoverview_filterPositionValue");
             filterPositionElement.selectedIndex = "0";
@@ -242,20 +246,26 @@ class TeachersOverview extends Component {
             document.getElementById("teachersoverview_filterMenu").style.display = "none";
           });
   
+      d3.select('#teachersoverview_teacherSearchButton')
+          .on('click', function(){
+            selectTeacherBySearch();
+          })
+  
       document.onclick = function(e) {
         if (e.target === document.getElementById("teachersoverview_svgTeachersOverview")){
           deselectTeacher();
           document.getElementById("teachersoverview_legendMenu").style.display = "none";
           document.getElementById("teachersoverview_filterMenu").style.display = "none";
         }
-        if (e.target === document.getElementById("teacherSearch")){
+        if (e.target === document.getElementById("teachersoverview_teacherSearch")){
           document.getElementById("teachersoverview_legendMenu").style.display = "none";
           document.getElementById("teachersoverview_filterMenu").style.display = "none";
         }
-        if (e.target === document.getElementById("teacherSearchButton")){
+        if (e.target === document.getElementById("teachersoverview_teacherSearchButton")){
           document.getElementById("teachersoverview_legendMenu").style.display = "none";
           document.getElementById("teachersoverview_filterMenu").style.display = "none";
         }
+  
         if (e.target === document.getElementById("teachersoverview_legendButton")){
           document.getElementById("teachersoverview_filterMenu").style.display = "none";
         }
@@ -271,6 +281,14 @@ class TeachersOverview extends Component {
             }
             else legendMenuDisplay.display="none";
           });
+  
+      d3.select("#teachersoverview_teacherSearch")
+          .on('click',function(){
+            document.getElementById("teachersoverview_teacherSearch").value="";
+          });
+  
+      autocomplete(document.getElementById("teachersoverview_teacherSearch"), teachersNames);
+      autocomplete(document.getElementById("teachersoverview_filterCourseValue"), coursesCodes);
   
     };
   
@@ -329,6 +347,7 @@ class TeachersOverview extends Component {
       var filterDepartmentElement = document.getElementById("teachersoverview_filterDepartmentValue");
       var departmentValue = filterDepartmentElement.options[filterDepartmentElement.selectedIndex].value
   
+      var chosenCourse= document.getElementById("teachersoverview_filterCourseValue").value;
   
       // @v4 Reset the 'y' force to draw the bubbles to their year centers
       simulation.force('y', d3.forceY().strength(forceStrength).y(function(d){
@@ -336,26 +355,66 @@ class TeachersOverview extends Component {
   
         if (d.value >= minValue && d.value <= maxValue) {
   
-          if (positionValue === "choose" && departmentValue === "choose") {
+          if (positionValue === "choose" && departmentValue === "choose" && chosenCourse === "") {
             d.filterState = 1;
           }
   
-          if (positionValue === "choose" && d.department === departmentValue) {
+          if (d.position === positionValue && departmentValue === "choose" && chosenCourse === "") {
             d.filterState = 1;
           }
   
-          if (d.position === positionValue && departmentValue === "choose") {
+          if (positionValue === "choose" && d.department === departmentValue && chosenCourse === "") {
             d.filterState = 1;
           }
   
-          if (d.position === positionValue && d.department === departmentValue) {
+          if (positionValue === "choose" && departmentValue === "choose" && isInCourses(d, chosenCourse)) {
             d.filterState = 1;
           }
+  
+          if (d.position === positionValue && d.department === departmentValue && chosenCourse === "") {
+            d.filterState = 1;
+          }
+  
+          if (d.position === positionValue && departmentValue === "choose" && isInCourses(d, chosenCourse)) {
+            d.filterState = 1;
+          }
+  
+          if (positionValue === "choose"  && d.department === departmentValue && isInCourses(d, chosenCourse)) {
+            d.filterState = 1;
+          }
+  
+          if (d.position === positionValue && d.department === departmentValue && isInCourses(d, chosenCourse)) {
+            d.filterState = 1;
+          }
+  
         }
   
         else d.filterState = 0;
         return filterSplitCenters[d.filterState].y;
       }));
+  
+      /*
+      function to know if a course is in the courses of a teacher
+       */
+      function isInCourses(d, chosenCourse){
+        if (d.vt_courses.length!==0){
+          for (var i=0; i<d.vt_courses.length;i++){
+            if (d.vt_courses[i]["course_code"]===chosenCourse){
+              return true
+            }
+          }
+        }
+  
+        if (d.ht_courses.length!==0){
+          for (var t=0; t<d.ht_courses.length;t++){
+            if (d.ht_courses[t]["course_code"]===chosenCourse){
+              return true
+            }
+          }
+        }
+  
+        return false;
+      }
   
       // @v4 We can reset the alpha value and restart the simulation
       simulation.alpha(1).restart();
@@ -366,7 +425,7 @@ class TeachersOverview extends Component {
      * Hides Filter title displays.
      */
     function hideFilter() {
-      svg.selectAll('.split').remove();
+      svg.selectAll('.teachersoverview_split').remove();
     }
   
     /*
@@ -374,14 +433,14 @@ class TeachersOverview extends Component {
      */
     function showFilterSplitTitles() {
       svg.append('text')
-          .attr('class', 'split')
+          .attr('class', 'teachersoverview_split')
           .attr('x', 50)
           .attr('y', function (d) { return filterSplitTitles["filtered"]; })
           .attr('text-anchor', 'middle')
           .text("Filtered");
   
       svg.append('text')
-          .attr('class', 'split')
+          .attr('class', 'teachersoverview_split')
           .attr('x', 50)
           .attr('y', function (d) { return filterSplitTitles["notFiltered"]; })
           .attr('text-anchor', 'middle')
@@ -398,17 +457,17 @@ class TeachersOverview extends Component {
       d3.select(this).attr('r', function(d){return d.radius+5});
   
       var content = '<span class="name">Title: </span><span class="value">' +
-                    d.name +
-                    '</span><br/>' +
-                    '<span class="name">Position: </span><span class="value">' +
-                    positiveVal(d.position) +
-                    '</span><br/>' +
-                    '<span class="name">Department: </span><span class="value">' +
-                    positiveVal(d.department) +
-                    '</span><br/>' +
-                    '<span class="name">Hours assigned: </span><span class="value">' +
-                    positiveVal(d.value) + '%'+
-                    '</span>';
+          d.name +
+          '</span><br/>' +
+          '<span class="name">Position: </span><span class="value">' +
+          positiveVal(d.position) +
+          '</span><br/>' +
+          '<span class="name">Department: </span><span class="value">' +
+          positiveVal(d.department) +
+          '</span><br/>' +
+          '<span class="name">Hours assigned: </span><span class="value">' +
+          positiveVal(d.value) + '%'+
+          '</span>';
   
       tooltip.showTooltip(content, d3.event);
     }
@@ -438,11 +497,11 @@ class TeachersOverview extends Component {
     function deselectTeacher() {
       //Unselect previous teacher
   
-      d3.select(".selected")
-          .classed("selected", false);
+      d3.select(".teachersoverview_selected")
+          .classed("teachersoverview_selected", false);
   
-      d3.selectAll(".selectText")
-          .classed("selectText", false)
+      d3.selectAll(".teachersoverview_selectText")
+          .classed("teachersoverview_selectText", false)
           .remove();
     }
   
@@ -455,7 +514,7 @@ class TeachersOverview extends Component {
       //Select the new teacher for new circle style
   
       d3.select(this)
-          .classed("selected", true);
+          .classed("teachersoverview_selected", true);
   
       //Put the circle at the front
       d3.select(this.parentNode).each(function(){this.parentNode.appendChild(this)});
@@ -467,7 +526,7 @@ class TeachersOverview extends Component {
   
       var g = d3.select(this.parentNode).append('g')
           .attr('transform', 'translate(' + [dx, dx+10] + ')')
-          .classed("selectText", "true")
+          .classed("teachersoverview_selectText", "true")
   
       g.append("foreignObject")
           .attr("width", side)
@@ -479,8 +538,6 @@ class TeachersOverview extends Component {
             var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
             return text;
           });
-
-          
   
     }
   
@@ -498,7 +555,7 @@ class TeachersOverview extends Component {
   
       if (selectedTeacher !== null){
         d3.select(selectedTeacher)
-            .classed("selected", true);
+            .classed("teachersoverview_selected", true);
   
         //Put the circle at the front
   
@@ -512,7 +569,7 @@ class TeachersOverview extends Component {
   
         var g = d3.select(selectedTeacher.parentNode).append('g')
             .attr('transform', 'translate(' + [dx, dx] + ')')
-            .classed("selectText", "true")
+            .classed("teachersoverview_selectText", "true")
   
         g.append("foreignObject")
             .attr("width", side)
@@ -535,7 +592,7 @@ class TeachersOverview extends Component {
   
       var circle = null;
   
-      d3.selectAll('.bubble').each(function(d){
+      svg.selectAll('.teachersoverview_bubble').each(function(d){
         if (d.name === searchVal){
           circle = this;
         }
@@ -636,8 +693,138 @@ class TeachersOverview extends Component {
       // #332480
     }
   
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false;}
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+          /*check if the item starts with the same letters as the text field value:*/
+          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              selectTeacherBySearch();
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+            });
+            a.appendChild(b);
+          }
+        }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+          /*If the arrow DOWN key is pressed,
+          increase the currentFocus variable:*/
+          currentFocus++;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 38) { //up
+          /*If the arrow UP key is pressed,
+          decrease the currentFocus variable:*/
+          currentFocus--;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          /*If the ENTER key is pressed, prevent the form from being submitted,*/
+          e.preventDefault();
+          if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+          }
+        }
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+      });
+    }
+  
     // return the chart function from closure.
     return chart;
+  }
+
+  teachersNames(data){
+    var names = [];
+  
+    for (var i=0; i<data.length; i++){
+      names.push(data[i]["name"]);
+    }
+    return names;
+  }
+
+  coursesCodes(data){
+    var names = [];
+  
+  
+    for (var i=0; i<data.length; i++){
+  
+      for (var j=0; j<data[i]['vt_courses'].length;j++){
+        names.push(data[i]['vt_courses'][j]["course_code"]);
+      }
+      for (var k=0; k<data[i]['ht_courses'].length;k++){
+        names.push(data[i]['ht_courses'][k]["course_code"]);
+      }
+  
+    }
+  
+    function onlyUnique(value, index, self) {
+      return self.indexOf(value) === index;
+    }
+  
+  
+    return names.filter(onlyUnique);
   }
 
   floatingTooltip(tooltipId, width) {
@@ -720,112 +907,6 @@ class TeachersOverview extends Component {
     };
   }
 
-  autocomplete(inp, arr) {
-    /*the autocomplete function takes two arguments,
-    the text field element and an array of possible autocompleted values:*/
-    var currentFocus;
-    /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value;
-      /*close any already open lists of autocompleted values*/
-      closeAllLists();
-      if (!val) { return false;}
-      currentFocus = -1;
-      /*create a DIV element that will contain the items (values):*/
-      a = document.createElement("DIV");
-      a.setAttribute("id", this.id + "autocomplete-list");
-      a.setAttribute("class", "autocomplete-items");
-      /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
-      /*for each item in the array...*/
-      for (i = 0; i < arr.length; i++) {
-        /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
-          b.addEventListener("click", function(e) {
-            /*insert the value for the autocomplete text field:*/
-            inp.value = this.getElementsByTagName("input")[0].value;
-            /*close the list of autocompleted values,
-            (or any other open lists of autocompleted values:*/
-            closeAllLists();
-          });
-          a.appendChild(b);
-        }
-      }
-    });
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
-      var x = document.getElementById(this.id + "autocomplete-list");
-      if (x) x = x.getElementsByTagName("div");
-      if (e.keyCode == 40) {
-        /*If the arrow DOWN key is pressed,
-        increase the currentFocus variable:*/
-        currentFocus++;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 38) { //up
-        /*If the arrow UP key is pressed,
-        decrease the currentFocus variable:*/
-        currentFocus--;
-        /*and and make the current item more visible:*/
-        addActive(x);
-      } else if (e.keyCode == 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
-        if (currentFocus > -1) {
-          /*and simulate a click on the "active" item:*/
-          if (x) x[currentFocus].click();
-        }
-      }
-    });
-    function addActive(x) {
-      /*a function to classify an item as "active":*/
-      if (!x) return false;
-      /*start by removing the "active" class on all items:*/
-      removeActive(x);
-      if (currentFocus >= x.length) currentFocus = 0;
-      if (currentFocus < 0) currentFocus = (x.length - 1);
-      /*add class "autocomplete-active":*/
-      x[currentFocus].classList.add("autocomplete-active");
-    }
-    function removeActive(x) {
-      /*a function to remove the "active" class from all autocomplete items:*/
-      for (var i = 0; i < x.length; i++) {
-        x[i].classList.remove("autocomplete-active");
-      }
-    }
-    function closeAllLists(elmnt) {
-      /*close all autocomplete lists in the document,
-      except the one passed as an argument:*/
-      var x = document.getElementsByClassName("autocomplete-items");
-      for (var i = 0; i < x.length; i++) {
-        if (elmnt != x[i] && elmnt != inp) {
-          x[i].parentNode.removeChild(x[i]);
-        }
-      }
-    }
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function (e) {
-      closeAllLists(e.target);
-    });
-  }
-
-  teachersNames(data){
-    var names = [];
-  
-    for (var i=0; i<data.length; i++){
-      names.push(data[i]["name"]);
-    }
-    return names;
-  }
-
   render() {
     return (
       <div className="teachersoverview">
@@ -863,17 +944,26 @@ class TeachersOverview extends Component {
                       </select>
                   </div>
                   <div>
+                      <p class="filterElement firstElement">Filter by belonging to a course</p>
+
+                      <form autocomplete="off" class="filterElement">
+                          <div class=" filterElement autocomplete" style={{padding: "0"}}>
+                              <input id="teachersoverview_filterCourseValue" class="filterElement" type="text" name="myCourse" placeholder="Course"></input>
+                          </div>
+                      </form>
+                  </div>
+                  <div>
                       <div id="teachersoverview_eraseFilterButton" class="filterElement firstElement">Erase Filter</div>
                       <div id="teachersoverview_confirmFilterButton" class="filterElement">Ok</div>
                   </div>
               </div>
 
-            <form autocomplete="off">
-              <div class="autocomplete toolbarElement" style={{width: "300px"}}>
-                <input id="teachersoverview_teacherSearch" class="toolbarElement" type="text" name="myTeacher" placeholder="Teacher"></input>
-              </div>
-              <div id="teachersoverview_teacherSearchButton" class = "button toolbarElement"> Search </div>
-            </form>
+              <form autocomplete="off">
+                  <div class="autocomplete toolbarElement" style={{width: "300px"}}>
+                      <input id="teachersoverview_teacherSearch" class="toolbarElement" type="text" name="myTeacher" placeholder="Search for a teacher here"></input>
+                  </div>
+                  <div id="teachersoverview_teacherSearchButton" class = "button toolbarElement"> Search </div>
+              </form>
               <div id="teachersoverview_legendButton" class="button toolbarElement">
                   Legend
               </div>
