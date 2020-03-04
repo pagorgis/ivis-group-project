@@ -157,7 +157,7 @@ Visualization
 }
 
 .coursesoverview_selectText{
-    color:white;
+    color:white !important;
     font-size:20px;
 }
 

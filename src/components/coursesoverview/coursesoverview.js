@@ -542,9 +542,11 @@ class CoursesOverview extends Component {
           .attr("height", side)
           .append("xhtml:body")
           .attr("id", "selectTextBody")
-          .attr('style', 'text-align:center')
+          .style('text-align', 'center')
+          .style('color', 'white')
+          .style('background-color', d => d.value == 0 ? '#60B766' : '#A7A7A7')
           .html(function(d){
-            var text = "<p style='margin: 0'>" +"("+d.code + ")";
+            var text = "<p style='margin: 0'> <b>" + d.code + "</b>";
             text+= "<p style='margin: 0'>" +d.name;
             text+="<p style='margin-top:20px'>"+ d.value + "%";
             return text;
@@ -587,9 +589,11 @@ class CoursesOverview extends Component {
             .attr("height", side)
             .append("xhtml:body")
             .attr("id", "selectTextBody")
-            .attr('style', 'text-align:center')
+            .style('text-align', 'center')
+            .style('color', 'white')
+            .style('background-color', d => d.value == 0 ? '#60B766' : '#A7A7A7')
             .html(function(d){
-              var text = "<p style='margin: 0'>" +"("+d.code + ")";
+              var text = "<p style='margin: 0'><b>" + d.code + "</b>";
               text+= "<p style='margin: 0'>" +d.name;
               text+="<p style='margin-top:20px'>"+ d.value + "%";
               return text;

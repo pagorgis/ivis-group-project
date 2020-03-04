@@ -28,7 +28,8 @@ body {
 }
 
 .flex-2 {
-    width: 50%;
+    margin-left: 5%;
+    width: 40%;
 }
 
 .teachers-tab, .courses-tab {

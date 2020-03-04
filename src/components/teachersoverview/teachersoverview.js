@@ -533,7 +533,9 @@ class TeachersOverview extends Component {
           .attr("height", side)
           .append("xhtml:body")
           .attr("id", "selectTextBody")
-          .attr('style', 'text-align:center')
+          .style('text-align', 'center')
+          .style('color', 'white')
+          .style('background-color', d => d.value > 0 ? '#60B766' : (d.value < 0 ? '#DC2F2F' : '#5D41E6'))
           .html(function(d){
             var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
             return text;
@@ -576,7 +578,9 @@ class TeachersOverview extends Component {
             .attr("height", side)
             .append("xhtml:body")
             .attr("id", "selectTextBody")
-            .attr('style', 'text-align:center')
+            .style('text-align', 'center')
+            .style('color', 'white')
+            .style('background-color', d => d.value > 0 ? '#60B766' : (d.value < 0 ? '#DC2F2F' : '#5D41E6'))
             .html(function(d){
               var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
               return text;
