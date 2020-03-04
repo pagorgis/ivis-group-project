@@ -198,7 +198,7 @@ const lineEnd = tearcherData.kontering;
 
   const penaltyRect = svg.append("rect")
   .attr("height", 8)
-  .attr("y", function(d) { return margin.bottom+7; })
+  .attr("y", function(d) { return margin.bottom+2; })
   .attr("x", function(d) { return x(tearcherData.gru_balance_19)})
   .attr("width", function(d) { return x(0)-x(startFromPenalty); })
   .attr("fill","red")
