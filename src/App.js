@@ -14,10 +14,10 @@ class App extends Component {
     super(props);
     this.state = {
       tab: "teachers",
-      active_teacher: null,
+      active_teacher: 6,
       active_course: null,
-      //teachers_data: require('./data/Teachers.json'),
-      //courses_data: require('./data/Courses.json')
+      teachers_data: require('./data/Teachers.json'),
+      courses_data: require('./data/Courses.json')
     }
 
     this.handleOverviewChange = this.handleOverviewChange.bind(this);
@@ -26,6 +26,10 @@ class App extends Component {
   componentDidMount() {
     //console.log(this.state.courses_data);
     //console.log(this.state.teachers_data);
+  }
+
+  teacherIdUpdate(id) {
+    this.setState({active_teacher: id})
   }
 
   handleOverviewChange(tab) {
@@ -48,12 +52,12 @@ class App extends Component {
           </div>
           <div className="flex-container">
             <div className="flex-1">
-              {this.state.tab === "teachers" ? <TeachersOverview /> : null}
-              {this.state.tab === "courses" ? <CoursesOverview /> : null}
+              {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} /> : null}
+              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} /> : null}
             </div>
             <div className="flex-2">
-              <TeacherDetails/>
-              <CourseDetails />
+              {this.state.active_teacher === null ? null : <TeacherDetails active_teacher={this.state.active_teacher} />}
+              {this.state.active_course === null ? null : <CourseDetails active_course={this.state.active_course} />}
             </div>
           </div>
         </div>
