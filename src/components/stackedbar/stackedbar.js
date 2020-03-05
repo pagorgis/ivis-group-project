@@ -16,7 +16,7 @@ import {
   axisLeft,
   json,
 } from "d3";
-import Teachers from "../data/Teachers.json";
+import Teachers from "../../data/Teachers.json";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Row, Dropdown} from "react-bootstrap";
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './teacherdetails.css';
-import StackedBar from '../StackedBar.js'
+import StackedBar from '../stackedbar/stackedbar';
 //import * as d3 from "d3";
 
 class TeacherDetails extends Component {
