@@ -15,7 +15,7 @@ class TeacherDetails extends Component {
     if (this.props.active_teacher !== prevState.active_teacher) {
       this.setState({ active_teacher: this.props.active_teacher });
     }
- }
+  }
 
   render() {
     const id=10;  //teacher id

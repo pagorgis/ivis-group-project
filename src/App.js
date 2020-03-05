@@ -14,7 +14,7 @@ class App extends Component {
     super(props);
     this.state = {
       tab: "teachers",
-      active_teacher: 6,
+      active_teacher: null,
       active_course: null,
       teachers_data: require('./data/Teachers.json'),
       courses_data: require('./data/Courses.json')
@@ -30,6 +30,10 @@ class App extends Component {
 
   teacherIdUpdate(id) {
     this.setState({active_teacher: id})
+  }
+
+  courseIdUpdate(id) {
+    this.setState({active_course: id})
   }
 
   handleOverviewChange(tab) {
@@ -53,7 +57,7 @@ class App extends Component {
           <div className="flex-container">
             <div className="flex-1">
               {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} /> : null}
-              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} /> : null}
+              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} /> : null}
             </div>
             <div className="flex-2">
               {this.state.active_teacher === null ? null : <TeacherDetails active_teacher={this.state.active_teacher} />}

@@ -51,7 +51,7 @@ class StackedBar extends Component {
       select("#mySVG").selectAll("*").remove();
       this.stackedBar();
     }
- }
+  }
 
   stackedBar () {
     const teacherdata=this.state.teachers_data[this.state.active_teacher-1];
