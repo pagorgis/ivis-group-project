@@ -15,7 +15,6 @@ class TeacherDetails extends Component {
     const id=10;  //teacher id
     return (
       <div className="teacherdetails">
-        This is teacher details component
         <StackedBar value={id}/>
       </div>
     );
