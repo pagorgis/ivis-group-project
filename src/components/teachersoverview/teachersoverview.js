@@ -4,8 +4,8 @@ import './auto_complete.css';
 import * as d3 from "d3";
 
 class TeachersOverview extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       teachers_data: require('../../data/Teachers.json')
     }
@@ -19,6 +19,7 @@ class TeachersOverview extends Component {
   }
 
   bubbleChart() {
+    var propfunction = this.props.teacherIdUpdate;
     const rawData = this.state.teachers_data;
     let teachersNames = this.teachersNames(rawData);
     let coursesCodes = this.coursesCodes(rawData);
@@ -537,6 +538,7 @@ class TeachersOverview extends Component {
           .style('color', 'white')
           .style('background-color', d => d.value > 0 ? '#60B766' : (d.value < 0 ? '#DC2F2F' : '#5D41E6'))
           .html(function(d){
+            propfunction(d.id);
             var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
             return text;
           });
@@ -582,6 +584,7 @@ class TeachersOverview extends Component {
             .style('color', 'white')
             .style('background-color', d => d.value > 0 ? '#60B766' : (d.value < 0 ? '#DC2F2F' : '#5D41E6'))
             .html(function(d){
+              propfunction(d.id);
               var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
               return text;
             });
