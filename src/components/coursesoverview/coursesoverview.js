@@ -18,6 +18,7 @@ class CoursesOverview extends Component {
   }
 
   bubbleChart() {
+    var propfunction = this.props.courseIdUpdate;
     const rawData = this.state.courses_data;
     let coursesNames = this.coursesNames(rawData);
     // Constants for sizing
@@ -687,7 +688,8 @@ class CoursesOverview extends Component {
         .style('text-align', 'center')
         .style('color', 'white')
         .style('background-color', d => d.positiveValue - d.negativeValue === 0 ? '#5D41E6' : (d.positiveValue - d.negativeValue < 0 ? '#DC2F2F' : '#60B766'))
-        .html(function(e){
+        .html(function(d){
+          propfunction(d.id);
           var text = "<p style='margin: 0'>" +"<b>"+d.code + "</b>";
           text+= "<p style='margin: 0'>" +d.name;
           text+="<p style='margin-top:20px'>"+ d.value + "h";
@@ -747,7 +749,7 @@ class CoursesOverview extends Component {
           .style('color', 'white')
           .style('background-color', d => d.positiveValue - d.negativeValue === 0 ? '#5D41E6' : (d.positiveValue - d.negativeValue < 0 ? '#DC2F2F' : '#60B766'))
           .html(function(d){
-            console.log(d);
+            propfunction(d.id);
             var text = "<p style='margin: 0'>" +"<b>"+d.code + "</b>";
             text+= "<p style='margin: 0'>" +d.name;
             text+="<p style='margin-top:20px'>"+ d.value + "h";

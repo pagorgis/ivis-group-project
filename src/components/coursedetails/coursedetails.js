@@ -3,25 +3,35 @@ import './coursedetails.css';
 import * as d3 from "d3";
 
 class CourseDetails extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      courses_data: require('../../data/Courses.json')
+      courses_data: require('../../data/Courses.json'),
+      active_course: this.props.active_course
     }
   }
 
   componentDidMount() {
-    console.log(this.state.courses_data);
     this.drawStackedBarCharts();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active_course !== prevState.active_course) {
+      this.setState({ active_course: this.props.active_course });
+      d3.select("#course_info").selectAll("*").remove();
+      d3.select("#my_dataviz").selectAll("*").remove();
+      this.drawStackedBarCharts();
+    }
+  }
+
   drawStackedBarCharts() {
+    var propfunction = this.props.teacherIdUpdate;
 
     var tooltip=d3.select("body")
     .append("div")
     .attr("class","tooltip")
     .style("opacity",0.0);
-    var id = 52;
+    var id = this.state.active_course;
     //data structure
     var list = {
           frl: 0,   //lecture
@@ -95,7 +105,6 @@ class CourseDetails extends Component {
             
     var data = this.state.courses_data;
     var data_course = data.filter(data1=> data1.id == id)[0]
-    console.log(data_course)
     var data_t = data_course.teachers;
     var hours = [];
     // List of groups = species here = value of the first column called group -> I show them on the X axis
@@ -119,7 +128,6 @@ class CourseDetails extends Component {
       var allocate = "allocated_" + group_reflect[group] + "_h";
       var plan = "planned_" +group_reflect[group] + "_h";
       list2.hours = data_course[allocate] - data_course[plan];
-      console.log(list2.hours)
       list2.type = group;
       extra.push(list2);
       hours.push(data_course[allocate])
@@ -156,30 +164,31 @@ class CourseDetails extends Component {
     //manuallu stack the data
     //Show the course data
     var detail = ["code","id","name","credits","financial_outcome","num_of_students","planned_total","allocated_total"]
+    
     svg_course.append("text")
       .text('text')
       .attr("x",50)
-      .attr('y',25)
-      .text("Id: " + data_course.id)
-      .attr('text-anchor',"left")
-  
-    svg_course.append("text")
-      .text('text')
-      .attr("x",150)
       .attr('y',55)
       .text("Code: " + data_course.code)
       .attr('text-anchor',"left")
   
       svg_course.append("text")
       .text('text')
-      .attr("x",150)
+      .attr("x",50)
       .attr('y',25)
       .text("Name: " + data_course.name)
+      .attr('text-anchor',"left")
+
+      svg_course.append("text")
+      .text('text')
+      .attr("x",180)
+      .attr('y',25)
+      .text("Periods: " + data_course.periods)
       .attr('text-anchor',"left")
   
       svg_course.append("text")
       .text('text')
-      .attr("x",50)
+      .attr("x",180)
       .attr('y',55)
       .text("Credits: " + data_course.credits)
       .attr('text-anchor',"left")
@@ -223,8 +232,10 @@ class CourseDetails extends Component {
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(function(d) { 
             var name = d.teacher_name;
+            var id = d.teacher_id;
             d.part.map(part=>{
               part["name"] = name;
+              part["id"] = id;
             })
             return d.part;
          })
@@ -251,9 +262,15 @@ class CourseDetails extends Component {
              .style("top",(d3.event.pageY +20)+"px")
              .style("opacity",1.0)
           })
-          .on("mouseout",function (d) {
-            tooltip.style("opacity",0.0);
-          });
+          .on("mousemove", function(d) {
+            tooltip
+            .style("left", (d3.event.pageX+"px"))
+            .style("top", (d3.event.pageY+30+"px"))
+          })
+          .on("mouseout", function(d) {
+            tooltip.style("opacity", 0.0);
+          })
+          .on("click", d => propfunction(d.id));
   //show the  comparison to the plan    
     svg.append("g")
       .selectAll("rect")
@@ -287,12 +304,15 @@ class CourseDetails extends Component {
           .on("mouseover", function(d) {
             if(d.hours < 0){
               tooltip
-              .html(" lack "+d.hours+ "h" + "<br/>")
+              .html("<b>Lack: </b>"+d.hours+ "h" + "<br/>")
               .style("left",(d3.event.pageX) +"px")
               .style("top",(d3.event.pageY +20)+"px")
               .style("opacity",1.0)
             }
           })
+          .on("mouseout",function (d) {
+            tooltip.style("opacity",0.0);
+          });
   
     //draw black lines
     var g = svg.append("g")
