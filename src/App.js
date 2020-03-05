@@ -61,7 +61,7 @@ class App extends Component {
             </div>
             <div className="flex-2">
               {this.state.active_teacher === null ? null : <TeacherDetails active_teacher={this.state.active_teacher} />}
-              {this.state.active_course === null ? null : <CourseDetails active_course={this.state.active_course} />}
+              {this.state.active_course === null ? null : <CourseDetails active_course={this.state.active_course} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} />}
             </div>
           </div>
         </div>

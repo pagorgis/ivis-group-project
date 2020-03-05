@@ -25,6 +25,7 @@ class CourseDetails extends Component {
   }
 
   drawStackedBarCharts() {
+    var propfunction = this.props.teacherIdUpdate;
 
     var tooltip=d3.select("body")
     .append("div")
@@ -104,7 +105,6 @@ class CourseDetails extends Component {
             
     var data = this.state.courses_data;
     var data_course = data.filter(data1=> data1.id == id)[0]
-    console.log(data_course)
     var data_t = data_course.teachers;
     var hours = [];
     // List of groups = species here = value of the first column called group -> I show them on the X axis
@@ -128,7 +128,6 @@ class CourseDetails extends Component {
       var allocate = "allocated_" + group_reflect[group] + "_h";
       var plan = "planned_" +group_reflect[group] + "_h";
       list2.hours = data_course[allocate] - data_course[plan];
-      console.log(list2.hours)
       list2.type = group;
       extra.push(list2);
       hours.push(data_course[allocate])
@@ -233,8 +232,10 @@ class CourseDetails extends Component {
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(function(d) { 
             var name = d.teacher_name;
+            var id = d.teacher_id;
             d.part.map(part=>{
               part["name"] = name;
+              part["id"] = id;
             })
             return d.part;
          })
@@ -261,9 +262,15 @@ class CourseDetails extends Component {
              .style("top",(d3.event.pageY +20)+"px")
              .style("opacity",1.0)
           })
-          .on("mouseout",function (d) {
-            tooltip.style("opacity",0.0);
-          });
+          .on("mousemove", function(d) {
+            tooltip
+            .style("left", (d3.event.pageX+"px"))
+            .style("top", (d3.event.pageY+30+"px"))
+          })
+          .on("mouseout", function(d) {
+            tooltip.style("opacity", 0.0);
+          })
+          .on("click", d => propfunction(d.id));
   //show the  comparison to the plan    
     svg.append("g")
       .selectAll("rect")
