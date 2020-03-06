@@ -56,7 +56,6 @@ class StackedBar extends Component {
 
   stackedBar () {
     const teacherdata=this.state.teachers_data[this.state.active_teacher-1];
-    console.log(teacherdata);
     var colors = this.state.colors;
     var penalty=0;
     var bonus=0;
@@ -75,7 +74,6 @@ class StackedBar extends Component {
     }
   }else{
     bonus=teacherdata.gru_balance_19;
-    console.log(bonus);
   }
 
     var rest=(teacherdata.kontering-startFromPenalty-teacherdata.gru_ht-teacherdata.gru_vt-teacherdata.self_dev).toFixed(2);
@@ -96,7 +94,7 @@ class StackedBar extends Component {
     }
     
     function stackMax(serie) {
-      return max(serie, function(d) { console.log(d);return d[1]; });
+      return max(serie, function(d) { return d[1]; });
     }
 
     
