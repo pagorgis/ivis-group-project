@@ -711,13 +711,16 @@ class CoursesOverview extends Component {
 
     var arc = d3.arc().innerRadius(80).outerRadius(100);
 
-    d3.select(selectedCourse.childNodes[0])
-    .attr('d', arc)
 
-    d3.select(selectedCourse.childNodes[1])
-    .attr('d', arc)
 
     if (selectedCourse !== null){
+
+    d3.select(selectedCourse.childNodes[0])
+        .attr('d', arc)
+
+    d3.select(selectedCourse.childNodes[1])
+        .attr('d', arc)
+
       d3.select(selectedCourse)
           .classed("coursesoverview_selected", true);
 
