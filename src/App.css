@@ -108,6 +108,9 @@ body {
     background: rgb(228, 164, 26);
    }
 
-   #grey-box {
+   #white-box {
     background:white;
+   }
+   #pink-box {
+    background:pink;
    }

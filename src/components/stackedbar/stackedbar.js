@@ -25,14 +25,15 @@ class StackedBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keys: ["penalty", "gru_ht", "gru_vt","self_dev","extra","unplanned"],
+      keys: ["Bonus","Penalty", "gru_ht", "gru_vt","self_dev","Extra","Unplanned"],
       colors: {
-        "penalty": "#F44336",
+        "Bonus":"#4CAF50",
+        "Penalty": "#F44336",
         "gru_ht": "rgb(228, 164, 26)",
         "gru_vt": "rgb(54, 98, 244)",
         "self_dev": "#FFEB3B",
-        "extra": "#4CAF50",
-        "unplanned":"white"
+        "Extra": "pink",
+        "Unplanned":"white"
       },
       teachers_data: require('../../data/Teachers.json'),
       active_teacher: this.props.active_teacher,
@@ -55,17 +56,27 @@ class StackedBar extends Component {
 
   stackedBar () {
     const teacherdata=this.state.teachers_data[this.state.active_teacher-1];
-    
+    console.log(teacherdata);
     var colors = this.state.colors;
     var penalty=0;
+    var bonus=0;
     var startFromPenalty=0;
     var hasPenalty=false;
-    if(teacherdata.gru_balance_19<0 && teacherdata.gru_ht==0 && teacherdata.gru_vt==0 && teacherdata.self_dev==0){
-        penalty=teacherdata.gru_balance_19;
-    }else if(teacherdata.gru_balance_19<0 && !(teacherdata.gru_ht==0 && teacherdata.gru_vt==0 && teacherdata.self_dev==0)){
+    var onlyPenalty=false;
+    if(teacherdata.gru_balance_19<0){
+      if(teacherdata.gru_ht==0 && teacherdata.gru_vt==0 && teacherdata.self_dev==0){
+        hasPenalty=true;
+        onlyPenalty=true;
+        penalty=-1*teacherdata.gru_balance_19;
+        startFromPenalty=teacherdata.gru_balance_19;
+      }else{
         hasPenalty=true;
         startFromPenalty=teacherdata.gru_balance_19;
     }
+  }else{
+    bonus=teacherdata.gru_balance_19;
+    console.log(bonus);
+  }
 
     var rest=(teacherdata.kontering-startFromPenalty-teacherdata.gru_ht-teacherdata.gru_vt-teacherdata.self_dev).toFixed(2);
     const checkRest=(rest)=>{
@@ -77,20 +88,20 @@ class StackedBar extends Component {
     }
 
     const data = [
-        {penalty: penalty, gru_ht: teacherdata.gru_ht, gru_vt: teacherdata.gru_vt, self_dev: teacherdata.self_dev,extra:teacherdata.extra,unplanned:checkRest(rest)},
+        {Bonus:bonus,Penalty: penalty, gru_ht: teacherdata.gru_ht, gru_vt: teacherdata.gru_vt, self_dev: teacherdata.self_dev,Extra:teacherdata.extra,Unplanned:checkRest(rest)},
       ];
-  
+
     function stackMin(serie) {
       return min(serie, function(d) { return d[0]; });
     }
     
     function stackMax(serie) {
-      return max(serie, function(d) { return d[1]; });
+      return max(serie, function(d) { console.log(d);return d[1]; });
     }
 
     
     var series = stack()
-    .keys(["penalty","gru_ht", "gru_vt", "self_dev","extra","unplanned"])
+    .keys(["Bonus","Penalty","gru_ht", "gru_vt", "self_dev","Extra","Unplanned"])
     .offset(stackOffsetDiverging)
     (data);
 
@@ -125,8 +136,23 @@ class StackedBar extends Component {
 
     // Three function that change the tooltip when user hover / move / leave a cell
     var mouseover = function(d) {
+      var keyText="";
+      if(d.key=="gru_ht"){
+        keyText="Autumn semester";
+      }else if(d.key=="gru_vt"){
+        keyText="Spring semester";
+      }else if(d.key=="self_dev"){
+        keyText="Self-development";
+      }else if(d.key=="Bonus"){
+        keyText="Bonus from last year"
+      }else if(d.key=="Penalty"){
+        keyText="Penalty from last year"
+      }else{
+        keyText=d.key;
+      }
+
     tooltip
-      .html(((d[1]-d[0]).toFixed(2)+"%"))
+      .html(keyText+": "+((d[0][1]-d[0][0]).toFixed(2)+"%"))
         .style("opacity", 1)
     select(this)
           .style("stroke", "black")
@@ -180,6 +206,12 @@ class StackedBar extends Component {
       .data(series)
       .enter().append("g")
         .attr("fill", function(d) { return colors[d.key]; })
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("stroke-opacity", 1)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
       .selectAll("rect")
       .data(function(d) { return d; })
       .enter().append("rect")
@@ -189,47 +221,37 @@ class StackedBar extends Component {
           if(hasPenalty){
             return x((d[0]+teacherdata.gru_balance_19));
           }else{return x(d[0]); }})
-          .style("stroke", "black")
-          .style("stroke-width", 1)
-          .style("stroke-opacity", 1)
         .attr("width", function(d) { return x(d[1]) - x(d[0]); })
-        .on("mouseover", mouseover)
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave);
+
 
     svg.append("g")
       .attr("transform", "translate(0," + (margin.top+10) + ")")
       .call(axisTop(x));
 
-    const lineEnd = teacherdata.kontering;
+    const kontLineEnd = teacherdata.kontering;
+    const zeroLineEnd = 0;
 
     const konteringRect = svg.append("rect")
-    .attr("height", 60)
-    .attr("y", function(d) { return margin.top-10; })
-    .attr("x", function(d) { return x(lineEnd)})
+    .attr("height", 30)
+    .attr("y", function(d) { return margin.top+10; })
+    .attr("x", function(d) { return x(kontLineEnd)-(0.5*5)})
     .attr("width", 5)
     .attr("fill","black")
     .on("mouseover", mouseoverKontering)
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleavePenalty);
 
-    // var myText =  svg.append("text")
-    // .attr("y", margin.bottom+40)
-    // .attr("x", function(){ return x(lineEnd)})
-    // .attr('text-anchor', 'middle')
-    // .attr("class", "myLabel")
-    // .text("Kontering");
+    if(teacherdata.kontering!=0){
+      const zeroLine = svg.append("line")
+      .attr("x1", function(){ return x(zeroLineEnd)})
+      .attr("x2", function(){ return x(zeroLineEnd)})
+      .attr("y1", margin.top+10)
+      .attr("y2", margin.top+40)
+      .attr("stroke-width", 5)
+      .attr("stroke", "black")
 
-    const penaltyRect = svg.append("rect")
-    .attr("height", 8)
-    .attr("y", function(d) { return margin.bottom+2; })
-    .attr("x", function(d) { return x(teacherdata.gru_balance_19)})
-    .attr("width", function(d) { return x(0)-x(startFromPenalty); })
-    .attr("fill","red")
-    .on("mouseover", mouseoverPenalty)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleavePenalty);
-    
+    }
+ 
   }
 
   render() {
@@ -246,12 +268,13 @@ class StackedBar extends Component {
               <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">Show Legend</Dropdown.Toggle>
                 <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Bonus from previous year</Dropdown.Item>
                   <Dropdown.Item href="#/action-1"><div className="box" id="red-box" style={{marginRight: 20 + 'px'}}></div>Penalty from previous year</Dropdown.Item>
                   <Dropdown.Item href="#/action-1"><div className="box" id="orange-box" style={{marginRight: 20 + 'px'}}></div>Total Autumn semester</Dropdown.Item>
                   <Dropdown.Item href="#/action-1"><div className="box" id="blue-box" style={{marginRight: 20 + 'px'}}></div>Total Spring semester</Dropdown.Item>
                   <Dropdown.Item href="#/action-1"><div className="box" id="yellow-box" style={{marginRight: 20 + 'px'}}></div>Self-development</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="grey-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
+                  <Dropdown.Item href="#/action-1"><div className="box" id="pink-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
+                  <Dropdown.Item href="#/action-1"><div className="box" id="white-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
                   <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
                 </Dropdown.Menu>
               </Dropdown>
