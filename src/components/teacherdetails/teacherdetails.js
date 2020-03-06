@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './teacherdetails.css';
 import StackedBar from '../stackedbar/stackedbar';
+import Icicle from '../icicle/icicle';
 //import * as d3 from "d3";
 
 class TeacherDetails extends Component {
@@ -23,6 +24,7 @@ class TeacherDetails extends Component {
       <div className="teacherdetails">
 
         <StackedBar active_teacher={this.state.active_teacher}/>
+        <Icicle />
       </div>
     );
   }
