@@ -53,8 +53,8 @@ class PieChart extends Component {
     svg.append("g")
         .attr("class", "lines");
 
-    var width = 500,
-        height = 500,
+    var width = 250,
+        height = 250,
         radius = Math.min(width, height) / 4;
 
     var pie = d3.pie()
@@ -210,124 +210,78 @@ class PieChart extends Component {
     /*
     draw the pie chart
     */
-    function draw(data) {
+      function draw(data){
 
-        if (data){
+          /* ------- Circle in the middle + text ------------- */
 
-            /* ------- Circle in the middle + text ------------- */
+          svg.append("circle")
+              .attr('r', radius*0.4)
+              .attr('fill', "white");
 
-            svg.append("circle")
-                .attr('r', radius*0.4)
-                .attr('fill', "#dddddd");
+          svg.append('text')
+              .text(totalHours)
+              .attr('y', -7)
+              .attr("font-family", "sans-serif")
+              .attr("font-size", "0.8em")
+              .attr("fill", "black")
+              .attr("text-anchor", "middle");
 
-            svg.append('text')
-                .text(totalHours)
-                .attr('y', -10)
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "1.5em")
-                .attr("fill", "black")
-                .attr("text-anchor", "middle");
+          svg.append('text')
+              .text("Hours")
+              .attr('y', +13)
+              .attr("font-family", "sans-serif")
+              .attr("font-size", "0.8em")
+              .attr("fill", "black")
+              .attr("text-anchor", "middle");
 
-            svg.append('text')
-                .text("Hours")
-                .attr('y', +20)
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "1.5em")
-                .attr("fill", "black")
-                .attr("text-anchor", "middle");
+          svg.selectAll('path')
+              .data(pie(data))
+              .enter()
+              .append('path')
+              .attr('d', arc)
+              .style("fill", function(d) { return color(d.data.label); })
+              .on('mouseover', showDetail)
+              .on('mouseout', hideDetail);
 
-            /* ------- PIE SLICES -------*/
-            var slice = svg.select(".slices").selectAll("path.slice")
-                .data(pie(data), key);
+          svg.append('g').classed('labels',true);
+          svg.append('g').classed('lines',true);
 
-            slice.enter()
-                .insert("path")
-                .style("fill", function(d) { return color(d.data.label); })
-                .attr("class", "slice")
-                .on('mouseover', showDetail)
-                .on('mouseout', hideDetail);
 
-            slice
-                .transition().duration(1000)
-                .attrTween("d", function(d) {
-                    this._current = this._current || d;
-                    var interpolate = d3.interpolate(this._current, d);
-                    this._current = interpolate(0);
-                    return function(t) {
-                        return arc(interpolate(t));
-                    };
-                })
+          var polyline = svg.select('.lines')
+              .selectAll('polyline')
+              .data(pie(data))
+              .enter().append('polyline')
+              .attr('points', function(d) {
 
-            slice.exit()
-                .remove();
+                  // see label transform function for explanations of these three lines.
+                  var pos = outerArc.centroid(d);
+                  pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
+                  return [arc.centroid(d), outerArc.centroid(d), pos]
+              });
 
-            /* ------- TEXT LABELS -------*/
 
-            var text = svg.select(".labels").selectAll("text")
-                .data(pie(data), key);
 
-            text.enter()
-                .append("text")
-                .attr("dy", "0.35em")
-                .text(function(d) {
-                    return d.data.label
-                })
-                .attr("font-size", "0.8em")
+          var label = svg.select('.labels').selectAll('text')
+              .data(pie(data))
+              .enter().append('text')
+              .attr('dy', '.35em')
+              .attr('font-size', '0.8em')
+              .html(function(d) {
+                  return d.data.label;
+              })
+              .attr('transform', function(d) {
+                  var pos = outerArc.centroid(d);
+                  pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
+                  return 'translate(' + pos + ')';
+              })
+              .style('text-anchor', function(d) {
+                  return (midAngle(d)) < Math.PI ? 'start' : 'end';
+              });
 
-            function midAngle(d){
-                return d.startAngle + (d.endAngle - d.startAngle)/2;
-            }
+          function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; }
+      }
 
-            text.transition().duration(1000)
-                .attrTween("transform", function(d) {
-                    this._current = this._current || d;
-                    var interpolate = d3.interpolate(this._current, d);
-                    this._current = interpolate(0);
-                    return function(t) {
-                        var d2 = interpolate(t);
-                        var pos = outerArc.centroid(d2);
-                        pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-                        return "translate("+ pos +")";
-                    };
-                })
-                .styleTween("text-anchor", function(d){
-                    this._current = this._current || d;
-                    var interpolate = d3.interpolate(this._current, d);
-                    this._current = interpolate(0);
-                    return function(t) {
-                        var d2 = interpolate(t);
-                        return midAngle(d2) < Math.PI ? "start":"end";
-                    };
-                });
 
-            text.exit()
-                .remove();
-
-            /* ------- SLICE TO TEXT POLYLINES -------*/
-
-            var polyline = svg.select(".lines").selectAll("polyline")
-                .data(pie(data), key);
-
-            polyline.enter()
-                .append("polyline");
-
-            polyline.transition().duration(1000)
-                .attrTween("points", function(d){
-                    this._current = this._current || d;
-                    var interpolate = d3.interpolate(this._current, d);
-                    this._current = interpolate(0);
-                    return function(t) {
-                        var d2 = interpolate(t);
-                        var pos = outerArc.centroid(d2);
-                        pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-                        return [arc.centroid(d2), outerArc.centroid(d2), pos];
-                    };
-                });
-
-            polyline.exit()
-                .remove();
-        }
-    };
 
     function floatingTooltip(tooltipId) {
       // Local variable to hold tooltip div for
