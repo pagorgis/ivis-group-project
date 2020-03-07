@@ -51,8 +51,14 @@ class App extends Component {
             <h1 className="staffiz-title">Staffiz</h1>
           </div>
           <div className="overview-bar">
-            <h2 className={this.state.tab === "teachers" ? "teachers-tab active" : "teachers-tab"} onClick={() => this.handleOverviewChange("courses")}>Teachers</h2>
-            <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
+            <div className="divTeachersTab">
+              <h2 className={this.state.tab === "teachers" ? "teachers-tab active" : "teachers-tab"} onClick={() => this.handleOverviewChange("courses")}>Teachers</h2>
+              <div className="hideRectangleTeachers"></div>
+            </div>
+            <div className="divCoursesTab">
+              <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
+              <div className="hideRectangleCourses"></div>
+            </div>
           </div>
           <div className="flex-container">
             <div className="flex-1">
