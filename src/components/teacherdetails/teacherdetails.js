@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './teacherdetails.css';
 import StackedBar from '../stackedbar/stackedbar';
+import Icicle from '../icicle/icicle';
 import PieChart from '../piechart/piechart';
 //import * as d3 from "d3";
 
@@ -24,6 +25,7 @@ class TeacherDetails extends Component {
     return (
       <div className="teacherdetails">
         <StackedBar active_teacher={this.state.active_teacher}/>
+        <Icicle />
         <PieChart active_teacher={this.state.active_teacher} active_course={this.state.active_course} />
       </div>
     );
