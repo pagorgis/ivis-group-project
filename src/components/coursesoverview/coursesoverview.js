@@ -1099,7 +1099,7 @@ class CoursesOverview extends Component {
               </div>
               </div>
             <form>
-              <div className="autocomplete toolbarElement" style={{width: "300px"}}>
+              <div className="autocomplete toolbarElement" style={{width: "50%", minWidth: "200px"}}>
                 <input id="coursesoverview_courseSearch" className="toolbarElement" type="text" name="myCourse" placeholder="Search for a course here"></input>
               </div>
               <div id="coursesoverview_coursesSearchButton" className = "button toolbarElement"> Search </div>

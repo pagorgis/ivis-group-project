@@ -972,7 +972,7 @@ class TeachersOverview extends Component {
               </div>
               </div>
               <form>
-                  <div className="autocomplete toolbarElement" style={{width: "300px"}}>
+                  <div className="autocomplete toolbarElement" style={{width: "50%", minWidth: "200px"}}>
                       <input id="teachersoverview_teacherSearch" className="toolbarElement" type="text" name="myTeacher" placeholder="Search for a teacher here"></input>
                   </div>
                   <div id="teachersoverview_teacherSearchButton" className = "button toolbarElement"> Search </div>
