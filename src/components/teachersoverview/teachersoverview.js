@@ -7,7 +7,8 @@ class TeachersOverview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teachers_data: require('../../data/Teachers.json')
+      teachers_data: require('../../data/Teachers.json'),
+      active_teacher: this.props.active_teacher
     }
   }
 

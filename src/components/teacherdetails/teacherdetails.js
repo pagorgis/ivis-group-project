@@ -25,7 +25,7 @@ class TeacherDetails extends Component {
     return (
       <div className="teacherdetails">
         <StackedBar active_teacher={this.state.active_teacher}/>
-        <Icicle />
+        <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} />
         <PieChart active_teacher={this.state.active_teacher} active_course={this.state.active_course} />
       </div>
     );
