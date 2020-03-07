@@ -18,6 +18,9 @@ class TeacherDetails extends Component {
     if (this.props.active_teacher !== prevState.active_teacher) {
       this.setState({ active_teacher: this.props.active_teacher });
     }
+    if (this.props.active_course !== prevState.active_course) {
+      this.setState({ active_course: this.props.active_course });
+    }
   }
 
   render() {
@@ -25,7 +28,7 @@ class TeacherDetails extends Component {
     return (
       <div className="teacherdetails">
         <StackedBar active_teacher={this.state.active_teacher}/>
-        <Icicle />
+        <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} />
         <PieChart active_teacher={this.state.active_teacher} active_course={this.state.active_course} />
       </div>
     );

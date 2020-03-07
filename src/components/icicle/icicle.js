@@ -3,17 +3,25 @@ import './icicle.css';
 import * as d3 from "d3";
 
 class Icicle extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
         teachers_data: require('../../data/Teachers.json'),
-        active_teacher: 4,
+        active_teacher: this.props.active_teacher,
         active_course: 16
     }
   }
 
   componentDidMount() {
       this.drawIcicle();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active_teacher !== prevState.active_teacher) {
+      this.setState({ active_teacher: this.props.active_teacher });
+      d3.select("#icicle").selectAll("*").remove();
+      this.drawIcicle();
+    }
   }
 
   filterData(teacherIdData) {
@@ -90,17 +98,15 @@ class Icicle extends Component {
   }
 
   drawIcicle() {
+    var propfunction = this.props.courseIdUpdate;
     var teacherIdData = this.state.teachers_data[this.state.active_teacher-1];
     var data = this.filterData(teacherIdData);
-    console.log(data);
     var width = 400;
     var height = 100;
     var color = d3.scaleOrdinal(['#E4A41A', '#3662F4']);
 
     const root = partition(data);
     let focus = root;
-    console.log(focus);
-    console.log(focus.descendants());
   
     const svg = d3.select("#icicle")
         .append('svg')
@@ -125,7 +131,13 @@ class Icicle extends Component {
           return color(d.data.name);
         })
         .style("cursor", "pointer")
-        .on("click", clicked);
+        .on("click", d => {
+          if (d.depth === 3) {
+            propfunction(d.data.id);
+            clicked(d);
+          } else {
+            clicked(d);
+          }});
   
     const text = cell.append("text")
         .style("user-select", "none")
@@ -152,7 +164,6 @@ class Icicle extends Component {
         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${parseFloat(d.value.toFixed(2))}`);
   
     function clicked(p) {
-      console.log(p);
       if (!p.depth) return;
       focus = focus === p ? p = p.parent : p; // If clicking at the leftmost rectangle, goes to parent.
   

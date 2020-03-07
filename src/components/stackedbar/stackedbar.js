@@ -223,7 +223,7 @@ class StackedBar extends Component {
 
 
     svg.append("g")
-      .attr("transform", "translate(0," + (margin.top+10) + ")")
+      .attr("transform", "translate(0," + (margin.top+3) + ")")
       .call(axisTop(x));
 
     const kontLineEnd = teacherdata.kontering;
@@ -231,7 +231,7 @@ class StackedBar extends Component {
 
     const konteringRect = svg.append("rect")
     .attr("height", 30)
-    .attr("y", function(d) { return margin.top+10; })
+    .attr("y", function(d) { return margin.top+3; })
     .attr("x", function(d) { return x(kontLineEnd)-(0.5*5)})
     .attr("width", 5)
     .attr("fill","black")
@@ -243,7 +243,7 @@ class StackedBar extends Component {
       const zeroLine = svg.append("line")
       .attr("x1", function(){ return x(zeroLineEnd)})
       .attr("x2", function(){ return x(zeroLineEnd)})
-      .attr("y1", margin.top+10)
+      .attr("y1", margin.top+3)
       .attr("y2", margin.top+40)
       .attr("stroke-width", 5)
       .attr("stroke", "black")
@@ -279,7 +279,7 @@ class StackedBar extends Component {
             </div>
           </div>
           <div id="myVis">
-            <svg id="mySVG" width="400" height="200"></svg>
+            <svg id="mySVG" width="400" height="125"></svg>
           </div>
         </Row>
       </React.Fragment>

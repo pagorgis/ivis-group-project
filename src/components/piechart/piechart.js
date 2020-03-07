@@ -13,31 +13,55 @@ class PieChart extends Component {
   }
 
   componentDidMount() {
-    this.myPieChart();  
+    if(this.ifCourseContainsTeacher()) {
+      this.myPieChart();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.active_course !== prevState.active_course) {
       this.setState({ active_course: this.props.active_course });
       d3.select("#pie_chart").selectAll("*").remove();
-      this.myPieChart();
+      if(this.ifCourseContainsTeacher()) {
+        this.myPieChart();
+      }
     }
     if (this.props.active_teacher !== prevState.active_teacher) {
       this.setState({ active_teacher: this.props.active_teacher });
       d3.select("#pie_chart").selectAll("*").remove();
-      this.myPieChart();
+      if(this.ifCourseContainsTeacher()) {
+        this.myPieChart();
+      }
     }
     
+  }
+
+  ifCourseContainsTeacher() {
+    if(!this.state.active_course) {return false;}
+    let teacher = this.state.active_teacher;
+    let course = this.state.active_course;
+    let courseData = this.state.courses_data[course-1];
+    
+    let teacherData = null;
+    for (let i = 0; i < courseData.teachers.length; i++){
+        if (courseData.teachers[i].teacher_id === teacher){
+          teacherData = courseData.teachers[i];
+          break;
+        }
+    }
+    if (teacherData === null) {
+      return false
+    } else {
+      return true;
+    }
   }
 
   
   myPieChart(){
 
     var data = this.state.courses_data;
-    var idTeacher = 19;
-    var idCourse = 16;
-
-    console.log(this.state.courses_data[2]);
+    var idTeacher = this.state.active_teacher;
+    var idCourse = this.state.active_course;
 
 
     var svg = d3.select("#pie_chart")
@@ -126,7 +150,6 @@ class PieChart extends Component {
                 teacher = d.teachers[i];
             }
         }
-        console.log(teacher);
         return teacher;
     }
 
@@ -136,7 +159,6 @@ class PieChart extends Component {
             for (var i=0;i<teacher.part.length;i++){
                 total+=teacher.part[i].hours;
             }
-            console.log(total);
             return total;
         }
     }
@@ -156,7 +178,6 @@ class PieChart extends Component {
                     arrayValues[position]=teacher.part[i].hours;
                 }
             }
-            console.log(arrayValues);
             return arrayValues;
         }
     }
