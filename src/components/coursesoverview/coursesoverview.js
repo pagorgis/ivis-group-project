@@ -22,8 +22,8 @@ class CoursesOverview extends Component {
     const rawData = this.state.courses_data;
     let coursesNames = this.coursesNames(rawData);
     // Constants for sizing
-    var width = 730;
-    var height = 700;
+      var width = 800;
+      var height = 730;
   
     // tooltip for mouseover functionality
     var tooltip = this.floatingTooltip('gates_tooltip', 30);
@@ -31,6 +31,8 @@ class CoursesOverview extends Component {
     // Locations to move bubbles towards, depending
     // on which view mode is selected.
     var center = { x: width / 2, y: height / 2 };
+
+    console.log(center);
 
   var filterSplitCenters = {
     1: { x: width / 2, y: height / 2.7 },
@@ -211,10 +213,11 @@ class CoursesOverview extends Component {
     svg = d3.select(selector)
       .append('svg')
       .attr('id', "coursesoverview_svgCoursesOverview")
-      .attr('width', width)
-      .attr('height', height)
+      .attr("viewBox", '0 0 '+width+' '+height)
 
-    var elem = svg.selectAll("g")
+
+
+      var elem = svg.selectAll("g")
         .data(nodes, function (d) { return d.id; });
     var elemEnter = elem.enter()
         .append("g")
@@ -360,6 +363,11 @@ class CoursesOverview extends Component {
       }
     }
 
+      d3.select("#coursesoverview_courseSearch")
+          .on('click',function(){
+              document.getElementById("coursesoverview_courseSearch").value="";
+          });
+
     createLegend();
     d3.select("#coursesoverview_legendButton")
         .on('click',function(){
@@ -478,14 +486,14 @@ class CoursesOverview extends Component {
   function showFilterSplitTitles() {
     svg.append('text')
         .attr('class', 'coursesoverview_split')
-        .attr('x', 50)
+        .attr('x', 60)
         .attr('y', function (d) { return filterSplitTitles["filtered"]; })
         .attr('text-anchor', 'middle')
         .text("Filtered");
 
     svg.append('text')
         .attr('class', 'coursesoverview_split')
-        .attr('x', 50)
+        .attr('x', 60)
         .attr('y', function (d) { return filterSplitTitles["notFiltered"]; })
         .attr('text-anchor', 'middle')
         .text("Not filtered");
@@ -781,14 +789,14 @@ class CoursesOverview extends Component {
     var menuSvg = d3.select("#coursesoverview_legendMenu")
         .append('svg')
         .attr('id', "coursesoverview_legendMenuSvg")
-        .attr('width', 420)
-        .attr('height', 260)
+        .attr('height', "16em")
+        .attr('width', "28em");
 
     menuSvg.append('circle')
-        .attr('r',20)
+        .attr('r',"1.3em")
         .attr('fill', "#5D41E6")
         .attr('stroke', "#332480")
-        .attr('stroke-width', 2)
+        .attr('stroke-width', "0.15em")
         .attr('cx',40)
         .attr('cy',40);
 
@@ -797,14 +805,14 @@ class CoursesOverview extends Component {
         .attr("y", 43)
         .text("Planned hours = allocated hours")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "14px")
+        .attr("font-size", "0.9em")
         .attr("fill", "black");
 
     menuSvg.append('circle')
-        .attr('r',20)
+        .attr('r',"1.3em")
         .attr('fill', "#DC2F2F")
         .attr('stroke', "#801B1B")
-        .attr('stroke-width', 2)
+        .attr('stroke-width', "0.15em")
         .attr('cx',40)
         .attr('cy',100);
 
@@ -813,14 +821,14 @@ class CoursesOverview extends Component {
         .attr("y", 103)
         .text("Need to allocate hours in some parts of the course")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "14px")
+        .attr("font-size", "0.9em")
         .attr("fill", "black");
 
       menuSvg.append('circle')
-          .attr('r',20)
+          .attr('r',"1.3em")
           .attr('fill', "#60B766")
           .attr('stroke', "#386C3B")
-          .attr('stroke-width', 2)
+          .attr('stroke-width', "0.15em")
           .attr('cx',40)
           .attr('cy',160);
 
@@ -829,16 +837,16 @@ class CoursesOverview extends Component {
           .attr("y", 163)
           .text("Too much allocated hours in some parts of the course")
           .attr("font-family", "sans-serif")
-          .attr("font-size", "14px")
+          .attr("font-size", "0.9em")
           .attr("fill", "black");
 
     var sizeCircle= menuSvg.append('g')
 
     sizeCircle.append('circle')
-        .attr('r',23)
+        .attr('r',"1.4em")
         .attr('fill', "white")
         .attr('stroke', "grey")
-        .attr('stroke-width', 2)
+        .attr('stroke-width', "0.1em")
         .attr('cx', 40)
         .attr('cy',220);
 
@@ -847,7 +855,7 @@ class CoursesOverview extends Component {
         .attr("y", 223)
         .text("size")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "15px")
+        .attr("font-size", "0.9em")
         .attr("fill", "black");
 
     menuSvg.append('text')
@@ -855,7 +863,7 @@ class CoursesOverview extends Component {
         .attr("y", 223)
         .text("Size of the anomaly")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "14px")
+        .attr("font-size", "0.9em")
         .attr("fill", "black");
 
 
@@ -1063,19 +1071,20 @@ class CoursesOverview extends Component {
   render() {
     return (
       <div className="coursesoverview">
-        <div class="container">
+        <div className="containerOverviews">
           <div id="coursesoverview_toolbar">
-              <div id="coursesoverview_filterButton" class = "button toolbarElement"> Filter
+              <div id="coursesoverview_filter">
+              <div id="coursesoverview_filterButton" className = "button toolbarElement"> Filter
               </div>
               <div id="coursesoverview_filterMenu">
                   <div>
-                      <p class="filterElement firstElement">Filter by anomaly value</p>
-                      <input id="coursesoverview_filterMinValue" class="filterElement" type="text" name="minValue" placeholder = "min value"></input>
-                      <input id="coursesoverview_filterMaxValue" class="filterElement" type="text" name="maxValue" placeholder = "max value"></input>
+                      <p className="filterElement firstElement">Filter by anomaly value</p>
+                      <input id="coursesoverview_filterMinValue" className="filterElement" type="text" name="minValue" placeholder = "min value"></input>
+                      <input id="coursesoverview_filterMaxValue" className="filterElement" type="text" name="maxValue" placeholder = "max value"></input>
                   </div>
                   <div>
-                      <p class="filterElement firstElement">Filter by period</p>
-                      <select id="coursesoverview_filterPeriodValue" class="filterElement" name="departments">
+                      <p className="filterElement firstElement">Filter by period</p>
+                      <select id="coursesoverview_filterPeriodValue" className="filterElement" name="departments">
                           <option value="choose">Choose a period</option>
                           <option value="1">Period 1</option>
                           <option value="2">Period 2</option>
@@ -1084,21 +1093,23 @@ class CoursesOverview extends Component {
                       </select>
                   </div>
                   <div>
-                      <div id="coursesoverview_eraseFilterButton" class="filterElement firstElement">Erase Filter</div>
-                      <div id="coursesoverview_confirmFilterButton" class="filterElement">Ok</div>
+                      <div id="coursesoverview_eraseFilterButton" className="filterElement firstElement">Erase Filter</div>
+                      <div id="coursesoverview_confirmFilterButton" className="filterElement">Ok</div>
                   </div>
               </div>
-
-            <form autocomplete="off">
-              <div class="autocomplete toolbarElement" style={{width: "300px"}}>
-                <input id="coursesoverview_courseSearch" class="toolbarElement" type="text" name="myCourse" placeholder="Search for a course here"></input>
               </div>
-              <div id="coursesoverview_coursesSearchButton" class = "button toolbarElement"> Search </div>
+            <form>
+              <div className="autocomplete toolbarElement" style={{width: "50%", minWidth: "200px"}}>
+                <input id="coursesoverview_courseSearch" className="toolbarElement" type="text" name="myCourse" placeholder="Search for a course here"></input>
+              </div>
+              <div id="coursesoverview_coursesSearchButton" className = "button toolbarElement"> Search </div>
             </form>
-              <div id="coursesoverview_legendButton" class="button toolbarElement">
+              <div id ="coursesoverview_legend">
+              <div id="coursesoverview_legendButton" className="button toolbarElement">
                   Legend
               </div>
               <div id="coursesoverview_legendMenu">
+              </div>
               </div>
           </div>
           <div id="coursesoverview_vis"></div>

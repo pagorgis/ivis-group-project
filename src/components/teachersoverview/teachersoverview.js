@@ -12,7 +12,6 @@ class TeachersOverview extends Component {
   }
 
   componentDidMount() {
-    console.log(this.state.teachers_data);
     let myBubbleChart = this.bubbleChart();
     myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
     //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
@@ -24,16 +23,20 @@ class TeachersOverview extends Component {
     let teachersNames = this.teachersNames(rawData);
     let coursesCodes = this.coursesCodes(rawData);
     // Constants for sizing
-    var width = 730;
-    var height = 700;
-  
-    // tooltip for mouseover functionality
+    var width = 800;
+    var height = 730;
+
+
+    // tooltip for mouseover functionalityc
     var tooltip = this.floatingTooltip('teachersoverview_gates_tooltip', 30);
   
     // Locations to move bubbles towards, depending
     // on which view mode is selected.
     var center = { x: width / 2, y: height / 2 };
-  
+
+    console.log(center);
+
+
     var filterSplitCenters = {
       1: { x: width / 2, y: height / 2.7 },
       0: { x: width / 2, y: 2*height / 3.4 }
@@ -166,8 +169,10 @@ class TeachersOverview extends Component {
       svg = d3.select(selector)
           .append('svg')
           .attr('id', "teachersoverview_svgTeachersOverview")
-          .attr('width', width)
-          .attr('height', height)
+          .attr("viewBox", '0 0 '+width+' '+height)
+
+          // .attr('width', width)
+          // .attr('height', height)
   
       var elem = svg.selectAll("g")
           .data(nodes, function (d) { return d.id; });
@@ -253,6 +258,7 @@ class TeachersOverview extends Component {
           })
   
       document.onclick = function(e) {
+        console.log(e.x);
         if (e.target === document.getElementById("teachersoverview_svgTeachersOverview")){
           deselectTeacher();
           document.getElementById("teachersoverview_legendMenu").style.display = "none";
@@ -435,14 +441,14 @@ class TeachersOverview extends Component {
     function showFilterSplitTitles() {
       svg.append('text')
           .attr('class', 'teachersoverview_split')
-          .attr('x', 50)
+          .attr('x', 60)
           .attr('y', function (d) { return filterSplitTitles["filtered"]; })
           .attr('text-anchor', 'middle')
           .text("Filtered");
   
       svg.append('text')
           .attr('class', 'teachersoverview_split')
-          .attr('x', 50)
+          .attr('x', 60)
           .attr('y', function (d) { return filterSplitTitles["notFiltered"]; })
           .attr('text-anchor', 'middle')
           .text("Not filtered");
@@ -613,14 +619,13 @@ class TeachersOverview extends Component {
       var menuSvg = d3.select("#teachersoverview_legendMenu")
           .append('svg')
           .attr('id', "teachersoverview_legendMenuSvg")
-          .attr('width', 300)
-          .attr('height', 260)
-  
+          .attr('height', "16em")
+
       menuSvg.append('circle')
-          .attr('r',20)
+          .attr('r',"1.3em")
           .attr('fill', "#60B766")
           .attr('stroke', "#386C3B")
-          .attr('stroke-width', 2)
+          .attr('stroke-width', "0.15em")
           .attr('cx',40)
           .attr('cy',40);
   
@@ -629,14 +634,14 @@ class TeachersOverview extends Component {
           .attr("y", 43)
           .text("Assigned hours  >  Year's goal")
           .attr("font-family", "sans-serif")
-          .attr("font-size", "15px")
+          .attr("font-size", "0.9em")
           .attr("fill", "black");
   
       menuSvg.append('circle')
-          .attr('r',20)
+          .attr('r',"1.3em")
           .attr('fill', "#5D41E6")
           .attr('stroke', "#332480")
-          .attr('stroke-width', 2)
+          .attr('stroke-width', "0.15em")
           .attr('cx',40)
           .attr('cy',100);
   
@@ -645,14 +650,14 @@ class TeachersOverview extends Component {
           .attr("y", 103)
           .text("Assigned hours  =  Year's goal")
           .attr("font-family", "sans-serif")
-          .attr("font-size", "15px")
+          .attr("font-size", "0.9em")
           .attr("fill", "black");
   
       menuSvg.append('circle')
-          .attr('r',20)
+          .attr('r',"1.3em")
           .attr('fill', "#DC2F2F")
           .attr('stroke', "#801B1B")
-          .attr('stroke-width', 2)
+          .attr("font-size", "0.9em")
           .attr('cx',40)
           .attr('cy',160);
   
@@ -661,16 +666,16 @@ class TeachersOverview extends Component {
           .attr("y", 163)
           .text("Assigned hours  <  Year's goal")
           .attr("font-family", "sans-serif")
-          .attr("font-size", "15px")
+          .attr("font-size", "0.9em")
           .attr("fill", "black");
   
       var sizeCircle= menuSvg.append('g')
   
       sizeCircle.append('circle')
-          .attr('r',23)
+          .attr('r',"1.4em")
           .attr('fill', "white")
           .attr('stroke', "grey")
-          .attr('stroke-width', 2)
+          .attr('stroke-width', "0.1em")
           .attr('cx', 40)
           .attr('cy',220);
   
@@ -679,7 +684,7 @@ class TeachersOverview extends Component {
           .attr("y", 223)
           .text("size")
           .attr("font-family", "sans-serif")
-          .attr("font-size", "15px")
+          .attr("font-size", "0.9em")
           .attr("fill", "black");
   
       menuSvg.append('text')
@@ -687,7 +692,7 @@ class TeachersOverview extends Component {
           .attr("y", 223)
           .text("Magnitude of the difference")
           .attr("font-family", "sans-serif")
-          .attr("font-size", "15px")
+          .attr("font-size", "0.9em")
           .attr("fill", "black");
   
   
@@ -917,19 +922,20 @@ class TeachersOverview extends Component {
   render() {
     return (
       <div className="teachersoverview">
-        <div class="container">
+        <div className="containerOverviews">
           <div id="teachersoverview_toolbar">
-              <div id="teachersoverview_filterButton" class = "button toolbarElement"> Filter
+              <div id = "teachersoverview_filter">
+              <div id="teachersoverview_filterButton" className = "button toolbarElement"> Filter
               </div>
               <div id="teachersoverview_filterMenu">
                   <div>
-                      <p class="filterElement firstElement">Filter by hours assigned value</p>
-                      <input id="teachersoverview_filterMinValue" class="filterElement" type="text" name="minValue" placeholder = "min value"></input>
-                      <input id="teachersoverview_filterMaxValue" class="filterElement" type="text" name="maxValue" placeholder = "max value"></input>
+                      <p className="filterElement firstElement">Filter by hours assigned value</p>
+                      <input id="teachersoverview_filterMinValue" className="filterElement" type="text" name="minValue" placeholder = "min value"></input>
+                      <input id="teachersoverview_filterMaxValue" className="filterElement" type="text" name="maxValue" placeholder = "max value"></input>
                   </div>
                   <div>
-                      <p class="filterElement firstElement">Filter by position</p>
-                      <select id="teachersoverview_filterPositionValue" class="filterElement" name="positions">
+                      <p className="filterElement firstElement">Filter by position</p>
+                      <select id="teachersoverview_filterPositionValue" className="filterElement" name="positions">
                           <option value="choose">Choose a position</option>
                           <option value="Professor">Professor</option>
                           <option value="Lektor">Lektor</option>
@@ -941,8 +947,8 @@ class TeachersOverview extends Component {
                       </select>
                   </div>
                   <div>
-                      <p class="filterElement firstElement">Filter by department</p>
-                      <select id="teachersoverview_filterDepartmentValue" class="filterElement" name="departments">
+                      <p className="filterElement firstElement">Filter by department</p>
+                      <select id="teachersoverview_filterDepartmentValue" className="filterElement" name="departments">
                           <option value="choose">Choose a department</option>
                           <option value="MID">MID</option>
                           <option value="TMH">TMH</option>
@@ -951,30 +957,32 @@ class TeachersOverview extends Component {
                       </select>
                   </div>
                   <div>
-                      <p class="filterElement firstElement">Filter by belonging to a course</p>
+                      <p className="filterElement firstElement">Filter by belonging to a course</p>
 
-                      <form autocomplete="off" class="filterElement">
-                          <div class=" filterElement autocomplete" style={{padding: "0"}}>
-                              <input id="teachersoverview_filterCourseValue" class="filterElement" type="text" name="myCourse" placeholder="Course"></input>
+                      <form  className="filterElement">
+                          <div className=" filterElement autocomplete" style={{padding: "0"}}>
+                              <input id="teachersoverview_filterCourseValue" className="filterElement" type="text" name="myCourse" placeholder="Course"></input>
                           </div>
                       </form>
                   </div>
                   <div>
-                      <div id="teachersoverview_eraseFilterButton" class="filterElement firstElement">Erase Filter</div>
-                      <div id="teachersoverview_confirmFilterButton" class="filterElement">Ok</div>
+                      <div id="teachersoverview_eraseFilterButton" className="filterElement firstElement">Erase Filter</div>
+                      <div id="teachersoverview_confirmFilterButton" className="filterElement">Ok</div>
                   </div>
               </div>
-
-              <form autocomplete="off">
-                  <div class="autocomplete toolbarElement" style={{width: "300px"}}>
-                      <input id="teachersoverview_teacherSearch" class="toolbarElement" type="text" name="myTeacher" placeholder="Search for a teacher here"></input>
+              </div>
+              <form>
+                  <div className="autocomplete toolbarElement" style={{width: "50%", minWidth: "200px"}}>
+                      <input id="teachersoverview_teacherSearch" className="toolbarElement" type="text" name="myTeacher" placeholder="Search for a teacher here"></input>
                   </div>
-                  <div id="teachersoverview_teacherSearchButton" class = "button toolbarElement"> Search </div>
+                  <div id="teachersoverview_teacherSearchButton" className = "button toolbarElement"> Search </div>
               </form>
-              <div id="teachersoverview_legendButton" class="button toolbarElement">
+              <div id="teachersoverview_legend">
+              <div id="teachersoverview_legendButton" className="button toolbarElement">
                   Legend
               </div>
               <div id="teachersoverview_legendMenu">
+              </div>
               </div>
           </div>
           <div id="teachersoverview_vis"></div>

@@ -1,17 +1,20 @@
 *{  box-sizing: border-box;
 }
 
-.container {
-    max-width: 800px;
+.teachersoverview{
+    max-width:90%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    padding: 10px 10px;
+    padding: 0.8em 0.8em;
+    bottom:0;
 }
 
+
+
 .button {
-    padding: 10px 10px;
+    padding: 0.7em 0.7em;
     cursor: pointer;
     text-align: center;
-    font-size: 20px;
+    font-size: 1em;
     background-color: #e0e0e0;
     text-decoration: none;
     vertical-align: middle;
@@ -24,9 +27,7 @@
 .toolbarElement{
     float:left;
     display:inline-block;
-    margin-right:10px;
-    height: 40px;
-
+    margin-right:0.7em;
 }
 
 /*
@@ -35,7 +36,7 @@ Menu for the filter fonction
 
 
 
-#teachersoverview_toolbar{
+#teachersoverview_filter{
     position:relative;
 }
 
@@ -44,9 +45,14 @@ Menu for the filter fonction
     background-color:white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     position:absolute;
-    left:0px;
-    top:+50px;
+    left:0;
+    top:50px;
     display:none;
+    z-index:100;
+}
+
+#teachersoverview_filterMenu .firstElement{
+    margin-right:0.5em;
 }
 
 #teachersoverview_filterMenu>div::after {
@@ -56,25 +62,25 @@ Menu for the filter fonction
 }
 
 #teachersoverview_filterMenu div{
-    padding:10px;
+    padding:0.5em;
     vertical-align: middle;
 }
 
-#teachersoverview_filterMenu .filterElement{
+.filterElement{
     display:inline-block;
-    padding:5px;
+    padding:0;
     margin:0;
-    height:40px;
-    line-height: 40px;
+    height:3em;
+    line-height: 3em;
 }
 
 #teachersoverview_filterMinValue, #teachersoverview_filterMaxValue{
     width:6em;
+    padding: 0 0.2em 0 0.2em;
 }
 
-#teachersoverview_filterMenu .firstElement{
-    float:left;
-    margin-right:10px;
+#teachersoverview_filterMinValue{
+    margin-right:0.5em;
 }
 
 #teachersoverview_filterCourseValue{
@@ -82,7 +88,7 @@ Menu for the filter fonction
 }
 
 #teachersoverview_filterCourseValueautocomplete-list{
-    max-height: 300px;
+    max-height: 20em;
     overflow:auto;
     padding: 0 !important;
 }
@@ -102,42 +108,22 @@ Menu for the filter fonction
 Legend
  */
 
-#teachersoverview_legendButton{
+#teachersoverview_legend{
     position:relative;
+}
+
+#teachersoverview_legendButton{
     float:right;
+    margin:0;
 }
 
 #teachersoverview_legendMenu{
     background-color:white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     position:absolute;
-    right:10px;
+    right:0;
     top:+50px;
     display:none;
-}
-
-#teachersoverview_legendMenu>div::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-#teachersoverview_legendMenu div{
-    padding:10px;
-    vertical-align: middle;
-}
-
-#teachersoverview_legendMenu .legendElement{
-    display:inline-block;
-    padding:0;
-    margin:0;
-    height:40px;
-    line-height: 40px;
-}
-
-#teachersoverview_legendMenu .firstElement{
-    float:left;
-    margin-right:10px;
 }
 
 /*
@@ -145,11 +131,10 @@ Visualization
  */
 
 #teachersoverview_vis {
-    width: 730px;
-    height: 700px;
     clear: both;
     margin:auto;
-    padding-bottom:20px;
+    padding-bottom:1em;
+    padding-top:1em;
 }
 
 .teachersoverview_selected{
