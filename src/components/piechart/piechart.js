@@ -42,8 +42,8 @@ class PieChart extends Component {
 
     var svg = d3.select("#pie_chart")
         .append("svg")
-        //.attr('width', 500)
-        //.attr('height', 500)
+        .attr('width', 400)
+        .attr('height', 150)
         .append("g")
 
     svg.append("g")
@@ -53,7 +53,7 @@ class PieChart extends Component {
     svg.append("g")
         .attr("class", "lines");
 
-    var width = 250,
+    var width = 400,
         height = 250,
         radius = Math.min(width, height) / 4;
 
@@ -71,13 +71,13 @@ class PieChart extends Component {
         .innerRadius(radius * 0.8)
         .outerRadius(radius * 0.8);
 
-    svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    svg.attr("transform", "translate(" + width / 2 + "," + height / 3 + ")");
 
     var key = function(d){ return d.data.label; };
 
     var color = d3.scaleOrdinal()
-        .domain(["Handledning","Föreläsning", "Övning", "Laboration", "Examination", "Kursutveckling", "Administration"])
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        .domain(["Administration","Assistance", "Course dev", "Examination", "Exercise", "Lab", "Lecture"])
+        .range(["#87cefa", "#ffc0cb", "#ff7f50", "#9370db", "#ffffe0", "#48d1cc", "#bbffff"]);
 
     var teacher = findTeacher();
 
@@ -221,7 +221,6 @@ class PieChart extends Component {
           svg.append('text')
               .text(totalHours)
               .attr('y', -7)
-              .attr("font-family", "sans-serif")
               .attr("font-size", "0.8em")
               .attr("fill", "black")
               .attr("text-anchor", "middle");
@@ -229,7 +228,6 @@ class PieChart extends Component {
           svg.append('text')
               .text("Hours")
               .attr('y', +13)
-              .attr("font-family", "sans-serif")
               .attr("font-size", "0.8em")
               .attr("fill", "black")
               .attr("text-anchor", "middle");
@@ -240,6 +238,8 @@ class PieChart extends Component {
               .append('path')
               .attr('d', arc)
               .style("fill", function(d) { return color(d.data.label); })
+              .style("stroke", 'black')
+              .style('stroke-width', 0.5)
               .on('mouseover', showDetail)
               .on('mouseout', hideDetail);
 
