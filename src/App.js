@@ -14,7 +14,7 @@ class App extends Component {
     super(props);
     this.state = {
       tab: "teachers",
-      active_teacher: 2,
+      active_teacher: 4,
       active_course: 2,
       teachers_data: require('./data/Teachers.json'),
       courses_data: require('./data/Courses.json')
