@@ -14,8 +14,8 @@ class App extends Component {
     super(props);
     this.state = {
       tab: "teachers",
-      active_teacher: 4,
-      active_course: 2,
+      active_teacher: null,
+      active_course: null,
       teachers_data: require('./data/Teachers.json'),
       courses_data: require('./data/Courses.json')
     }
@@ -56,12 +56,12 @@ class App extends Component {
           </div>
           <div className="flex-container">
             <div className="flex-1">
-              {this.state.tab === "a" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} /> : null}
-              {this.state.tab === "a" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} /> : null}
+              {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} /> : null}
+              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} /> : null}
             </div>
             <div className="flex-2">
               {this.state.active_teacher === null ? null : <TeacherDetails active_teacher={this.state.active_teacher} />}
-              {this.state.active_course !== 'a' ? null : <CourseDetails active_course={this.state.active_course} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} />}
+              {this.state.active_course === null ? null : <CourseDetails active_course={this.state.active_course} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} />}
             </div>
           </div>
         </div>
