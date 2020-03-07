@@ -101,15 +101,12 @@ class Icicle extends Component {
     var propfunction = this.props.courseIdUpdate;
     var teacherIdData = this.state.teachers_data[this.state.active_teacher-1];
     var data = this.filterData(teacherIdData);
-    console.log(data);
     var width = 400;
     var height = 100;
     var color = d3.scaleOrdinal(['#E4A41A', '#3662F4']);
 
     const root = partition(data);
     let focus = root;
-    console.log(focus);
-    console.log(focus.descendants());
   
     const svg = d3.select("#icicle")
         .append('svg')
@@ -167,7 +164,6 @@ class Icicle extends Component {
         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${parseFloat(d.value.toFixed(2))}`);
   
     function clicked(p) {
-      console.log(p);
       if (!p.depth) return;
       focus = focus === p ? p = p.parent : p; // If clicking at the leftmost rectangle, goes to parent.
   
