@@ -7,7 +7,8 @@ class CourseDetails extends Component {
     super(props);
     this.state = {
       courses_data: require('../../data/Courses.json'),
-      active_course: this.props.active_course
+      active_course: this.props.active_course,
+      active_teacher: this.props.active_teacher
     }
   }
 
@@ -22,10 +23,17 @@ class CourseDetails extends Component {
       d3.select("#my_dataviz").selectAll("*").remove();
       this.drawStackedBarCharts();
     }
+    if (this.props.active_teacher !== prevState.active_teacher) {
+      this.setState({ active_teacher: this.props.active_teacher });
+      d3.select("#course_info").selectAll("*").remove();
+      d3.select("#my_dataviz").selectAll("*").remove();
+      this.drawStackedBarCharts();
+    }
   }
 
   drawStackedBarCharts() {
     var propfunction = this.props.teacherIdUpdate;
+    var active_teacher = this.state.active_teacher;
 
     var tooltip=d3.select("#my_dataviz")
     .append("div")
@@ -243,6 +251,9 @@ class CourseDetails extends Component {
          })
         .enter().append("rect")
           .attr("fill", function(d) {
+              if(d.id === active_teacher) {
+                return "red";
+              }
               return color(d.type); 
           })
           .attr("stroke","black")
@@ -272,18 +283,22 @@ class CourseDetails extends Component {
           .on("mouseout", function(d) {
             tooltip.style("opacity", 0.0);
           })
-          .on("click", d => propfunction(d.id));
+          .on("click", d => {
+            if (d.id <= 84) {
+              propfunction(d.id)
+            }
+          });
   //show the  comparison to the plan    
     svg.append("g")
       .selectAll("rect")
         .data(extra)
         .enter().append("rect")
           .attr("fill", function(d) { 
-              if(d.hours < 0){
-                return '#FFFFFF';
-              }
-              else
-                return color(d.type); 
+            if(d.hours < 0){
+              return '#FFFFFF';
+            } else {
+              return color(d.type);
+            }
           })
           .attr("stroke","black")
           .attr("x", function(d) { return x(group_reflect[d.type]); })
