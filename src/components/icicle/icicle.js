@@ -132,12 +132,34 @@ class Icicle extends Component {
         })
         .style("cursor", "pointer")
         .on("click", d => {
+          console.log(d);
           if (d.depth === 3) {
             propfunction(d.data.id);
-            clicked(d);
+            //clicked(d);
           } else {
             clicked(d);
-          }});
+          }})
+        .on("mouseover", function(d) {
+          if(d.depth === 3) {
+            tooltip
+            .html(() => {
+              if(d.depth === 3) {
+                return "<b>Code:</b> " +d.data.code+"<br/>"+" <b>Name:</b> "+d.data.name+"<br/>"+" <b>Percentage:</b> "+d.data.value+"<br/>";
+              } 
+            })
+            .style("left",(d3.event.pageX) +"px")
+            .style("top",(d3.event.pageY +20)+"px")
+            .style("opacity",1.0)
+          }
+        })
+        .on("mousemove", function(d) {
+          tooltip
+          .style("left", (d3.event.pageX+"px"))
+          .style("top", (d3.event.pageY+30+"px"))
+        })
+        .on("mouseout", function(d) {
+          tooltip.style("opacity", 0.0);
+        });
   
     const text = cell.append("text")
         .style("user-select", "none")
@@ -160,8 +182,12 @@ class Icicle extends Component {
         .attr("fill-opacity", d => labelVisible(d) * 0.8)
         .text(d => ` ${parseFloat(d.value.toFixed(2))}`);
   
-    cell.append("title")
-        .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${parseFloat(d.value.toFixed(2))}`);
+    //cell.append("title").text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${parseFloat(d.value.toFixed(2))}`);
+
+    var tooltip=d3.select("#icicle")
+    .append("div")
+    .attr("class","tooltip")
+    .style("opacity",0.0);
   
     function clicked(p) {
       if (!p.depth) return;

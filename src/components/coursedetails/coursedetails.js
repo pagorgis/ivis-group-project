@@ -27,7 +27,7 @@ class CourseDetails extends Component {
   drawStackedBarCharts() {
     var propfunction = this.props.teacherIdUpdate;
 
-    var tooltip=d3.select("body")
+    var tooltip=d3.select("#my_dataviz")
     .append("div")
     .attr("class","tooltip")
     .style("opacity",0.0);
