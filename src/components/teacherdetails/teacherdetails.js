@@ -24,7 +24,6 @@ class TeacherDetails extends Component {
   }
 
   render() {
-    const id=10;  //teacher id
     return (
       <div className="teacherdetails">
         <StackedBar active_teacher={this.state.active_teacher}/>

@@ -7,8 +7,7 @@ class Icicle extends Component {
     super(props);
     this.state = {
         teachers_data: require('../../data/Teachers.json'),
-        active_teacher: this.props.active_teacher,
-        active_course: 16
+        active_teacher: this.props.active_teacher
     }
   }
 
@@ -144,7 +143,7 @@ class Icicle extends Component {
             tooltip
             .html(() => {
               if(d.depth === 3) {
-                return "<b>Code:</b> " +d.data.code+"<br/>"+" <b>Name:</b> "+d.data.name+"<br/>"+" <b>Percentage:</b> "+d.data.value+"<br/>";
+                return "<b>Code:</b> " +d.data.code+"<br/>"+" <b>Name:</b> "+d.data.name+"<br/>"+" <b>Percentage:</b> "+d.data.value+"%<br/>";
               } 
             })
             .style("left",(d3.event.pageX) +"px")
@@ -180,7 +179,7 @@ class Icicle extends Component {
   
     const tspan = text.append("tspan")
         .attr("fill-opacity", d => labelVisible(d) * 0.8)
-        .text(d => ` ${parseFloat(d.value.toFixed(2))}`);
+        .text(d => ` ${parseFloat(d.value.toFixed(2)) + "%"}`);
   
     //cell.append("title").text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${parseFloat(d.value.toFixed(2))}`);
 
