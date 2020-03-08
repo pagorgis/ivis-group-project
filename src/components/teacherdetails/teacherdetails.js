@@ -24,12 +24,11 @@ class TeacherDetails extends Component {
   }
 
   render() {
-    const id=10;  //teacher id
     return (
       <div className="teacherdetails">
+        <StackedBar active_teacher={this.state.active_teacher}/>
         <div className="td-flex-container">
           <div className="td-flex-1">
-            <StackedBar active_teacher={this.state.active_teacher}/>
             <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} />
           </div>
           <div className="td-flex-2">

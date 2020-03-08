@@ -153,7 +153,7 @@ class StackedBar extends Component {
       }
 
     tooltip
-      .html(keyText+": "+((d[0][1]-d[0][0]).toFixed(2)+"%"))
+      .html("<b>" +keyText+":</b> "+((d[0][1]-d[0][0]).toFixed(2)+"%"))
         .style("opacity", 1)
     select(this)
           .style("stroke", "black")
