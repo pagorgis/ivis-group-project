@@ -19,6 +19,7 @@ import {
 //import Teachers from "../../data/Teachers.json";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Row, Dropdown} from "react-bootstrap";
+import './stackedbar.css';
 
 
 class StackedBar extends Component {
@@ -103,7 +104,9 @@ class StackedBar extends Component {
     .offset(stackOffsetDiverging)
     (data);
 
-    var svg = select("#mySVG"),
+    var svg = select("#mySVG")
+        .attr('width', 400)
+        .attr('height', 125),
         margin = {top: 30, right: 20, bottom: 60, left: 30},
         width = 380,
         height = +svg.attr("height");
@@ -279,7 +282,7 @@ class StackedBar extends Component {
             </div>
           </div>
           <div id="myVis">
-            <svg id="mySVG" width="400" height="125"></svg>
+            <svg id="mySVG" ></svg>
           </div>
         </Row>
       </React.Fragment>

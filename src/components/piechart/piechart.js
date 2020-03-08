@@ -66,8 +66,9 @@ class PieChart extends Component {
 
     var svg = d3.select("#pie_chart")
         .append("svg")
-        .attr('width', 400)
-        .attr('height', 150)
+        //.attr('width', 400)
+        //.attr('height', 150)
+        .attr('viewBox', [50,0,300,150])
         .append("g")
 
     svg.append("g")
