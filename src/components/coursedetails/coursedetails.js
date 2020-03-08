@@ -46,7 +46,7 @@ class CourseDetails extends Component {
     var extra = [];
 
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 20, left: 50},
+    var margin = {top: 10, right: 30, bottom: 20, left: 30},
       width = 700 - margin.left - margin.right,
       height = 300 - margin.top - margin.bottom;
 
@@ -56,8 +56,9 @@ class CourseDetails extends Component {
     //details
     var svg_course = d3.select("#course_info")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", 80)
+    //.attr("width", width + margin.left + margin.right)
+    //.attr("height", 80)
+    .attr("viewBox", [0,0,width+margin.left+margin.right, 80])
     .append("g")
     .attr("transform",
             "translate(" + 0 + "," + 10 + ")");
@@ -97,8 +98,9 @@ class CourseDetails extends Component {
     // append the svg object to the body of the page
     var svg = d3.select("#my_dataviz")
     .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      //.attr("width", width + margin.left + margin.right)
+      //.attr("height", height + margin.top + margin.bottom)
+      .attr("viewBox", [0,0,width + margin.left + margin.right, height + margin.top + margin.bottom])
     .append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
