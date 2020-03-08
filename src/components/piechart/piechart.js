@@ -66,8 +66,9 @@ class PieChart extends Component {
 
     var svg = d3.select("#pie_chart")
         .append("svg")
-        .attr('width', 400)
-        .attr('height', 150)
+        //.attr('width', 400)
+        //.attr('height', 150)
+        .attr('viewBox', [50,0,300,150])
         .append("g")
 
     svg.append("g")
@@ -100,8 +101,8 @@ class PieChart extends Component {
     var key = function(d){ return d.data.label; };
 
     var color = d3.scaleOrdinal()
-        .domain(["Administration","Assistance", "Course dev", "Examination", "Exercise", "Lab", "Lecture"])
-        .range(["#87cefa", "#ffc0cb", "#ff7f50", "#9370db", "#ffffe0", "#48d1cc", "#bbffff"]);
+        .domain(["Assistance","Lecture", "Exercise", "Lab", "Examination", "Course dev", "Administration"])
+        .range(["#ffc0cb", "#bbffff", "#ffffe0", "#48d1cc", "#9370db", "#ff7f50", "#87cefa"]);
 
     var teacher = findTeacher();
 

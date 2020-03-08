@@ -1,3 +1,15 @@
 .teacherdetails {
     max-height: 50%;
 }
+
+.td-flex-container {
+    display: flex;
+}
+
+.td-flex-1 {
+    max-width: 70%;
+}
+
+.td-flex-2 {
+    width: 30%;
+}
