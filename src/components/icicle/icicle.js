@@ -100,11 +100,34 @@ class Icicle extends Component {
     var propfunction = this.props.courseIdUpdate;
     var teacherIdData = this.state.teachers_data[this.state.active_teacher-1];
     var data = this.filterData(teacherIdData);
-    var width = 400;
+    var width = 300;
     var height = 150;
     var color = d3.scaleOrdinal(['#E4A41A', '#3662F4']);
 
     const root = partition(data);
+    var descendants = root.descendants();
+
+
+    function hideRoot(){
+
+      for (var i = 1; i < descendants.length; i++) {
+        if (descendants[i].depth===1){
+          descendants[i].y0-=root.y1;
+          descendants[i].y1=width/3;
+        }
+        if (descendants[i].depth===2){
+          descendants[i].y0=width/3;
+          descendants[i].y1=2*width/3
+        }
+
+        if (descendants[i].depth===3){
+          descendants[i].y0=2*width/3;
+          descendants[i].y1=3*width/3;    }
+      }
+    }
+
+    hideRoot();
+
     let focus = root;
   
     const svg = d3.select("#icicle")
@@ -113,15 +136,24 @@ class Icicle extends Component {
         //.attr('width', width),
         //.attr('height', height)
         .style("font-size", "9px ");
-  
+
     const cell = svg
       .selectAll("g")
-      .data(root.descendants())
+      .data(descendants)
       .join("g")
-        .attr("transform", d => `translate(${d.y0},${d.x0})`);
-  
+        .attr("transform", function(d){
+          return "translate("+d.y0+","+d.x0+")";
+        })
+
     const rect = cell.append("rect")
-        .attr("width", d => d.y1 - d.y0 - 1) // -2 = gap between the rects
+        .attr("width", function(d){
+          if (d.depth===0) {
+            return 0;
+          }
+          else return d.y1 - d.y0 - 1})
+        .attr("style", function(d){
+          if (d.depth===0){return "display:none"}
+        })
         .attr("height", d => rectHeight(d))
         .attr("fill-opacity", 1.0)
         .attr("fill", d => {
@@ -131,7 +163,7 @@ class Icicle extends Component {
         })
         .style("cursor", "pointer")
         .on("click", d => {
-          console.log(d);
+          // console.log(d);
           if (d.depth === 3) {
             propfunction(d.data.id);
             //clicked(d);
