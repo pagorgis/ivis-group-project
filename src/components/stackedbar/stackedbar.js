@@ -77,7 +77,7 @@ class StackedBar extends Component {
     bonus=teacherdata.gru_balance_19;
   }
 
-    var rest=(teacherdata.kontering-startFromPenalty-teacherdata.gru_ht-teacherdata.gru_vt-teacherdata.self_dev).toFixed(2);
+    var rest=(teacherdata.kontering-bonus-startFromPenalty-teacherdata.gru_ht-teacherdata.gru_vt-teacherdata.self_dev).toFixed(2);
     const checkRest=(rest)=>{
         if(rest>0){
             return rest;
