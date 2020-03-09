@@ -35,10 +35,6 @@ class CourseDetails extends Component {
     var propfunction = this.props.teacherIdUpdate;
     var active_teacher = this.state.active_teacher;
 
-    var tooltip=d3.select("#my_dataviz")
-    .append("div")
-    .attr("class","tooltip")
-    .style("opacity",0.0);
     var id = this.state.active_course;
     //data structure
     var list = {
@@ -50,6 +46,17 @@ class CourseDetails extends Component {
           ku:0, //course_dev
           adm:0, //administration
           name : ""
+    };
+
+    var list_s = {
+      frl: 0,   //lecture
+      ovn: 0, //exercise
+      la:0,  //Labs
+      ha: 0, //assistance
+      ex:0,  //examination
+      ku:0, //course_dev
+      adm:0, //administration
+      name : ""
     };
     var extra = [];
 
@@ -174,64 +181,62 @@ class CourseDetails extends Component {
     //manuallu stack the data
     //Show the course data
     var detail = ["code","id","name","credits","financial_outcome","num_of_students","planned_total","allocated_total"]
-    
+    svg_course.append("text")
+    .text('text')
+    .attr("x",50)
+    .attr('y',25)
+    .text("Id: " + data_course.id)
+    .attr('text-anchor',"left")
+
     svg_course.append("text")
       .text('text')
-      .attr("x",50)
+      .attr("x",150)
       .attr('y',55)
-      .text("Code: " + data_course.code)
+      .text("code: " + data_course.code)
       .attr('text-anchor',"left")
-  
+
       svg_course.append("text")
       .text('text')
-      .attr("x",50)
+      .attr("x",150)
       .attr('y',25)
       .text("Name: " + data_course.name)
       .attr('text-anchor',"left")
 
       svg_course.append("text")
       .text('text')
-      .attr("x",180)
-      .attr('y',25)
-      .text("Periods: " + data_course.periods)
-      .attr('text-anchor',"left")
-  
-      svg_course.append("text")
-      .text('text')
-      .attr("x",180)
+      .attr("x",50)
       .attr('y',55)
       .text("Credits: " + data_course.credits)
       .attr('text-anchor',"left")
-  
+
       svg_course.append("text")
       .text('text')
       .attr("x",300)
       .attr('y',25)
       .text("Budget: " + data_course.financial_outcome + "kr")
       .attr('text-anchor',"left")
-  
+
       svg_course.append("text")
       .text('text')
       .attr("x",300)
       .attr('y',55)
-      .text("Students: " + data_course.num_of_students)
+      .text("Students nbr: " + data_course.num_of_students)
       .attr('text-anchor',"left")
-  
+
       svg_course.append("text")
       .text('text')
       .attr("x",460)
       .attr('y',25)
-      .text("Time (planned_total): " + data_course.planned_total + "h")
+      .text("Time (planned_total): " + data_course.num_of_students + "h")
       .attr('text-anchor',"left")
-  
+
       svg_course.append("text")
       .text('text')
       .attr("x",460)
       .attr('y',55)
       .text("Time (allocated_total): " + data_course.allocated_total + "h")
       .attr('text-anchor',"left")
-  
-  
+
     // Show the bars
     svg.append("g")
       .selectAll("g")
@@ -251,9 +256,6 @@ class CourseDetails extends Component {
          })
         .enter().append("rect")
           .attr("fill", function(d) {
-              if(d.id === active_teacher) {
-                return "red";
-              }
               return color(d.type); 
           })
           .attr("stroke","black")
@@ -269,25 +271,114 @@ class CourseDetails extends Component {
               return x.bandwidth()
           })
           .on("mouseover", function(d) {
-            tooltip
+            var tooltip=d3.select("#my_dataviz")
+            .append("div")
+            .attr("class","tooltip")
+            .attr("id","tooltipid")
+            .style("opacity",0.0)
              .html("<b>Name:</b> " +d.name+"<br/>"+" <b>Type:</b> "+d.type+"<br/>"+" <b>Hours:</b> "+d.hours+"<br/>")
              .style("left",(d3.event.pageX) +"px")
              .style("top",(d3.event.pageY +20)+"px")
              .style("opacity",1.0)
           })
           .on("mousemove", function(d) {
-            tooltip
-            .style("left", (d3.event.pageX+"px"))
-            .style("top", (d3.event.pageY+30+"px"))
+            document.body.querySelector("#tooltipid").remove();
+            var tooltip=d3.select("#my_dataviz")
+            .append("div")
+            .attr("class","tooltip")
+            .attr("id","tooltipid")
+            .style("opacity",0.0)
+             .html("<b>Name:</b> " +d.name+"<br/>"+" <b>Type:</b> "+d.type+"<br/>"+" <b>Hours:</b> "+d.hours+"<br/>")
+             .style("left",(d3.event.pageX) +"px")
+             .style("top",(d3.event.pageY +20)+"px")
+             .style("opacity",1.0)
           })
-          .on("mouseout", function(d) {
-            tooltip.style("opacity", 0.0);
+          .on("mouseout",function (d) {
+            document.body.querySelector("#tooltipid").remove();
           })
           .on("click", d => {
             if (d.id <= 84) {
               propfunction(d.id)
             }
           });
+          svg
+          .append('defs')
+          .append('pattern')
+            .attr('id', 'diagonalHatch')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 4)
+            .attr('height', 4)
+          .append('path')
+            .attr('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2')
+            .attr('stroke', '#000000')
+            .attr('stroke-width', 1);
+    // Show the bars
+    svg.append("g")
+    .selectAll("g")
+    // Enter in the stack data = loop key per key = group per group
+    .data(data_t)
+    .enter().append("g")
+      .selectAll("rect")
+      // enter a second time = loop subgroup per subgroup to add all rectangles
+      .data(function(d) { 
+          var name = d.teacher_name;
+          var id = d.teacher_id;
+          d.part.map(part=>{
+            part["name"] = name;
+            part["id"] = id;
+          })
+          return d.part;
+       })
+      .enter().append("rect")
+        .attr("fill", function(d) {
+            if(d.id === active_teacher) {
+              return 'url(#diagonalHatch)';
+            }
+            return color(d.type); 
+        })
+        .attr("stroke","black")
+        .attr("x", function(d) { return x(group_reflect[d.type]); })
+        .attr("y", function(d) { 
+            list_s[d.type] = d.hours + list_s[d.type]
+            return y(list_s[d.type]); 
+        })
+        .attr("height", function(d) {
+              return y(list_s[d.type] - d.hours) - y(list_s[d.type]); 
+        })
+        .attr("width",function(d){
+            return x.bandwidth()
+        })
+        .on("mouseover", function(d) {
+          var tooltip=d3.select("#my_dataviz")
+          .append("div")
+          .attr("class","tooltip")
+          .attr("id","tooltipid")
+          .style("opacity",0.0)
+           .html("<b>Name:</b> " +d.name+"<br/>"+" <b>Type:</b> "+d.type+"<br/>"+" <b>Hours:</b> "+d.hours+"<br/>")
+           .style("left",(d3.event.pageX) +"px")
+           .style("top",(d3.event.pageY +20)+"px")
+           .style("opacity",1.0)
+        })
+        .on("mousemove", function(d) {
+          document.body.querySelector("#tooltipid").remove();
+          var tooltip=d3.select("#my_dataviz")
+          .append("div")
+          .attr("class","tooltip")
+          .attr("id","tooltipid")
+          .style("opacity",0.0)
+           .html("<b>Name:</b> " +d.name+"<br/>"+" <b>Type:</b> "+d.type+"<br/>"+" <b>Hours:</b> "+d.hours+"<br/>")
+           .style("left",(d3.event.pageX) +"px")
+           .style("top",(d3.event.pageY +20)+"px")
+           .style("opacity",1.0)
+        })
+        .on("mouseout",function (d) {
+          document.body.querySelector("#tooltipid").remove();
+        })
+        .on("click", d => {
+          if (d.id <= 84) {
+            propfunction(d.id)
+          }
+        });
   //show the  comparison to the plan    
     svg.append("g")
       .selectAll("rect")
@@ -320,7 +411,10 @@ class CourseDetails extends Component {
           .attr("width",x.bandwidth()) 
           .on("mouseover", function(d) {
             if(d.hours < 0){
-              tooltip
+              var tooltip=d3.select("#my_dataviz")
+              .append("div")
+              .attr("class","tooltip")
+              .attr("id","tooltipid")
               .html("<b>Lack: </b>"+d.hours+ "h" + "<br/>")
               .style("left",(d3.event.pageX) +"px")
               .style("top",(d3.event.pageY +20)+"px")
@@ -328,7 +422,7 @@ class CourseDetails extends Component {
             }
           })
           .on("mouseout",function (d) {
-            tooltip.style("opacity",0.0);
+            document.body.querySelector("#tooltipid").remove();
           });
   
     //draw black lines
