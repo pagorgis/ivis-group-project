@@ -386,7 +386,8 @@ class CourseDetails extends Component {
         })
         .on("click", d => {
           if (d.id <= 84) {
-            propfunction(d.id)
+            propfunction(d.id);
+            clickFromOutside();
           }
         });
   //show the  comparison to the plan    
