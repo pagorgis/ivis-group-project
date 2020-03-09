@@ -16,6 +16,8 @@ class App extends Component {
       tab: "teachers",
       active_teacher: null,
       active_course: null,
+      clicked_teacher_from_outside: false,
+      clicked_course_from_outside: false,
       teachers_data: require('./data/Teachers.json'),
       courses_data: require('./data/Courses.json')
     }
@@ -36,11 +38,27 @@ class App extends Component {
     this.setState({active_course: id})
   }
 
+  clickedTeacherFromOutside() {
+    this.setState({clicked_teacher_from_outside: true});
+  }
+
+  resetTeacherFromOutside() {
+    this.setState({clicked_teacher_from_outside: false});
+  }
+
+  clickedCourseFromOutside() {
+    this.setState({clicked_course_from_outside: true});
+  }
+
+  resetCourseFromOutside() {
+    this.setState({clicked_course_from_outside: false});
+  }
+
   handleOverviewChange(tab) {
     if (tab === "teachers") {
-      this.setState({tab: "courses"});
+      this.setState({tab: "courses", clicked_teacher_from_outside: false, clicked_course_from_outside: false, active_teacher: null, active_course: null});
     } else if (tab === "courses") {
-      this.setState({tab: "teachers"});
+      this.setState({tab: "teachers", clicked_teacher_from_outside: false, clicked_course_from_outside: false, active_teacher: null, active_course: null});
     }
   }
 
@@ -62,12 +80,12 @@ class App extends Component {
           </div>
           <div className="flex-container">
             <div className="flex-1">
-              {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} /> : null}
-              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} /> : null}
+              {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} resetTeacherFromOutside={() => this.resetTeacherFromOutside()} clicked_teacher_from_outside={this.state.clicked_teacher_from_outside}/> : null}
+              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} resetCourseFromOutside={() => this.resetCourseFromOutside()} clicked_course_from_outside={this.state.clicked_course_from_outside}/> : null}
             </div>
             <div className="flex-2">
-              {<TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)}/>}
-              {<CourseDetails active_course={this.state.active_course} active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} />}
+              {<TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} courseClick={() => this.clickedCourseFromOutside()}/>}
+              {<CourseDetails active_course={this.state.active_course} active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} teacherClick={() => this.clickedTeacherFromOutside()}/>}
             </div>
           </div>
         </div>

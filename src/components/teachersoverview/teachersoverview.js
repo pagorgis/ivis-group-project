@@ -8,18 +8,35 @@ class TeachersOverview extends Component {
     super(props);
     this.state = {
       teachers_data: require('../../data/Teachers.json'),
-      active_teacher: this.props.active_teacher
+      active_teacher: this.props.active_teacher,
+      //bubbleChart = this.bubbleChart(this.state.active_teacher)
     }
   }
 
   componentDidMount() {
-    let myBubbleChart = this.bubbleChart();
+    let myBubbleChart = this.bubbleChart(this.state.active_teacher);
     myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
     //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
   }
 
-  bubbleChart() {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active_teacher !== prevState.active_teacher) {
+      this.setState({ active_teacher: this.props.active_teacher });
+    }
+    if (this.props.clicked_teacher_from_outside !== prevProps.clicked_teacher_from_outside) {
+      var propfunction = this.props.resetTeacherFromOutside;
+      propfunction();
+      if(this.state.active_teacher !== null && !this.props.clicked_teacher_from_outside) {
+        d3.select("#teachersoverview_vis").selectAll("*").remove();
+        let myBubbleChart = this.bubbleChart(this.state.active_teacher);
+        myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
+      }
+    }
+  }
+
+  bubbleChart(teacherIdd) {
     var propfunction = this.props.teacherIdUpdate;
+    //var teacherId = this.state.active_teacher;
     const rawData = this.state.teachers_data;
     let teachersNames = this.teachersNames(rawData);
     let coursesCodes = this.coursesCodes(rawData);
@@ -304,7 +321,11 @@ class TeachersOverview extends Component {
   
       autocomplete(document.getElementById("teachersoverview_teacherSearch"), teachersNames);
       autocomplete(document.getElementById("teachersoverview_filterCourseValue"), coursesCodes);
-  
+
+      if (teacherIdd){
+        selectTeacherById(teacherIdd)
+      }
+
     };
   
     function ticked() {
@@ -471,7 +492,7 @@ class TeachersOverview extends Component {
       // change outline to indicate hover state.
       d3.select(this).attr('r', function(d){return d.radius+5});
   
-      var content = '<span class="name">Title: </span><span class="value">' +
+      var content = '<span class="name">Name: </span><span class="value">' +
           d.name +
           '</span><br/>' +
           '<span class="name">Position: </span><span class="value">' +
@@ -605,7 +626,55 @@ class TeachersOverview extends Component {
             });
       }
     }
-  
+
+    /*
+      Select a teacher when we search for him
+       */
+    function selectTeacherById(teacherId){
+
+      //Deselect the teachers previously selected
+      deselectTeacher();
+
+      // take the searched value
+      var selectedTeacher = findTeacherCircleById(teacherId);
+
+
+      if (selectedTeacher !== null){
+        d3.select(selectedTeacher)
+            .classed("teachersoverview_selected", true);
+
+        //Put the circle at the front
+
+        d3.select(selectedTeacher.parentNode).each(function(){this.parentNode.appendChild(this)});
+
+
+        //Add the text to the circle
+        var radius = 80;
+        var side = 2 * radius * Math.cos(Math.PI / 4);
+        var dx = -side/2;
+
+        var g = d3.select(selectedTeacher.parentNode).append('g')
+            .attr('transform', 'translate(' + [dx, dx] + ')')
+            .classed("teachersoverview_selectText", "true")
+
+        g.append("foreignObject")
+            .attr("width", side)
+            .attr("height", side)
+            .append("xhtml:body")
+            .attr("id", "selectTextBody")
+            .style('text-align', 'center')
+            .style('color', 'white')
+            .style('background-color', d => d.value > 5 ? '#60B766' : (d.value < -5 ? '#DC2F2F' : '#5D41E6'))
+            .html(function(d){
+              propfunction(d.id);
+              var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
+              return text;
+            });
+      }
+    }
+
+
+
     /*
     Help function to find the circle associated with a name
      */
@@ -622,8 +691,22 @@ class TeachersOverview extends Component {
   
       return (circle);
     }
-  
-  
+
+    /*
+    find teacher circle associated with id
+     */
+    function findTeacherCircleById(teacherId){
+      var circle=null;
+
+      svg.selectAll('.teachersoverview_bubble').each(function(d){
+        if (d.id === teacherId){
+          circle = this;
+        }
+      })
+
+      return (circle);
+    }
+
     function createLegend(){
       var menuSvg = d3.select("#teachersoverview_legendMenu")
           .append('svg')

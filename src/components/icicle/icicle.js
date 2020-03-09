@@ -98,6 +98,7 @@ class Icicle extends Component {
 
   drawIcicle() {
     var propfunction = this.props.courseIdUpdate;
+    var clickFromOutside = this.props.courseClick;
     var teacherIdData = this.state.teachers_data[this.state.active_teacher-1];
     var data = this.filterData(teacherIdData);
     var width = 300;
@@ -166,6 +167,7 @@ class Icicle extends Component {
           // console.log(d);
           if (d.depth === 3) {
             propfunction(d.data.id);
+            clickFromOutside();
             //clicked(d);
           } else {
             clicked(d);

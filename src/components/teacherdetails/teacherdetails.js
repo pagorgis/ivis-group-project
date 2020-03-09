@@ -33,7 +33,7 @@ class TeacherDetails extends Component {
         displayContent = <><StackedBar active_teacher={this.state.active_teacher}/>
         <div className="td-flex-container">
           <div className="td-flex-1">
-            <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} />
+            <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} courseClick={this.props.courseClick}/>
           </div>
           <div className="td-flex-2">
             <PieChart active_teacher={this.state.active_teacher} active_course={this.state.active_course} />

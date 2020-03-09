@@ -4,21 +4,42 @@ import './auto_complete.css';
 import * as d3 from "d3";
 
 class CoursesOverview extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      courses_data: require('../../data/Courses.json')
+      courses_data: require('../../data/Courses.json'),
+      active_course: this.props.active_course
     }
   }
 
   componentDidMount() {
-    let myBubbleChart = this.bubbleChart();
+    let myBubbleChart = this.bubbleChart(this.state.active_course);
     myBubbleChart('#coursesoverview_vis', this.state.courses_data);
     //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
   }
 
-  bubbleChart() {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active_course !== prevState.active_course) {
+      this.setState({ active_course: this.props.active_course });
+      //d3.select("#coursesoverview_vis_vis").selectAll("*").remove();
+      //let myBubbleChart = this.bubbleChart();
+      //myBubbleChart('#coursesoverview_vis', this.state.courses_data);
+    }
+    if (this.props.clicked_course_from_outside !== prevProps.clicked_course_from_outside) {
+      var propfunction = this.props.resetCourseFromOutside;
+      propfunction();
+      if(this.state.active_course !== null && !this.props.clicked_course_from_outside) {
+        d3.select("#coursesoverview_vis").selectAll("*").remove();
+        let myBubbleChart = this.bubbleChart(this.state.active_course);
+        myBubbleChart('#coursesoverview_vis', this.state.courses_data);
+      }
+    }
+  }
+  
+
+  bubbleChart(courseIdd) {
     var propfunction = this.props.courseIdUpdate;
+    //var courseId = this.state.active_course;
     const rawData = this.state.courses_data;
     let coursesNames = this.coursesNames(rawData);
     // Constants for sizing
@@ -387,6 +408,10 @@ class CoursesOverview extends Component {
         });
 
         autocomplete(document.getElementById("coursesoverview_courseSearch"), coursesNames);
+
+        if (courseIdd){
+          selectCourseById(courseIdd)
+        }
 
   };
 
@@ -777,6 +802,65 @@ class CoursesOverview extends Component {
     }
   }
 
+  function selectCourseById(courseId){
+
+    //Deselect the teachers previously selected
+    deselectCourse();
+
+    // take the searched value
+    var selectedCourse = findCourseCircleById(courseId);
+
+    var arc = d3.arc().innerRadius(80).outerRadius(100);
+
+    if (selectedCourse !== null) {
+      
+      d3.select(selectedCourse.childNodes[0])
+      .attr('d', arc)
+
+      d3.select(selectedCourse.childNodes[1])
+      .attr('d', arc)
+
+    
+      d3.select(selectedCourse)
+          .classed("coursesoverview_selected", true);
+
+      //Put the circle at the front
+
+        d3.select(svg).each(function(){selectedCourse.parentNode.appendChild(selectedCourse)});
+
+
+      //Add the text to the circle
+      var radius = 100;
+      var side = 1.5 * radius * Math.cos(Math.PI / 4);
+      var dx = -side/2;
+
+      var circle = d3.select(selectedCourse).append('circle')
+            .attr('r', 80)
+            .attr('fill', d => d.positiveValue - d.negativeValue === 0 ? '#5D41E6' : (d.positiveValue - d.negativeValue < 0 ? '#DC2F2F' : '#60B766'))
+            .classed("coursesoverview_selectText", "true");
+
+       var g = d3.select(selectedCourse).append('g')
+          .attr('transform', 'translate(' + [dx, dx+20] + ')')
+          .classed("coursesoverview_selectText", "true")
+
+      g.append("foreignObject")
+          .attr("width", side)
+          .attr("height", side)
+          .append("xhtml:body")
+          .attr("id", "selectTextBody")
+          .style('text-align', 'center')
+          .style('color', 'white')
+          .style('background-color', d => d.positiveValue - d.negativeValue === 0 ? '#5D41E6' : (d.positiveValue - d.negativeValue < 0 ? '#DC2F2F' : '#60B766'))
+          .html(function(d){
+            propfunction(d.id);
+            var text = "<p style='margin: 0'>" +"<b>"+d.code + "</b>";
+            text+= "<p style='margin: 0'>" +d.name;
+            text+="<p style='margin-top:20px'>"+ d.value + "h";
+            return text;
+          });
+    }
+  }
+
   /*
   Help function to find the circle associated with a name
    */
@@ -792,6 +876,20 @@ class CoursesOverview extends Component {
     })
     return (circle);
   }
+
+  function findCourseCircleById(courseId){
+    var searchVal = document.getElementById("coursesoverview_courseSearch").value;
+
+    var circle = null;
+
+    svg.selectAll('.bubbleGroup').each(function(d){
+      if (d.id === courseId){
+        circle = this;
+      }
+    })
+    return (circle);
+  }
+
 
 
   function createLegend(){

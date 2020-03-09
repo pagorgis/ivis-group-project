@@ -1,5 +1,8 @@
 .teacherdetails {
-    max-height: 50%;
+    height: 48%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom:3%;
+    padding:1em;
 }
 
 .td-flex-container {
@@ -12,8 +15,10 @@
 
 .td-flex-2 {
     width: 40%;
+    margin-left:1em;
 }
 
 .t-overview-message {
     text-align: center;
+    line-height: 100%;
 }

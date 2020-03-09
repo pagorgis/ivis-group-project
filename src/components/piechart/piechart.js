@@ -69,7 +69,16 @@ class PieChart extends Component {
         //.attr('width', 400)
         //.attr('height', 150)
         .attr('viewBox', [50,0,300,150])
-        .append("g")
+        .append("g");
+
+      svg.append('text')
+          .attr('class', 'pieChart_title')
+          .attr('x', 0)
+          .attr('y', "-4em")
+          .attr('text-anchor', 'middle')
+          .attr("font-size", "1em")
+          .attr("opacity", 0.5)
+          .text("Contribution to course "+data[idCourse-1].code);
 
     svg.append("g")
         .attr("class", "slices");
