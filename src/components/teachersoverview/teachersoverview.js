@@ -210,7 +210,7 @@ class TeachersOverview extends Component {
       // Initially, their radius (r attribute) will be 0.
       elemEnter.append('circle')
           .classed('teachersoverview_bubble', true)
-          .attr('r', 0)
+          .attr('r', function (d) { return d.radius; })
           .data(nodes, function (d) { return d.id; })
           .attr('fill', function(d){
             if (d.value>5){return '#60B766'}
@@ -230,12 +230,7 @@ class TeachersOverview extends Component {
       bubbles = svg.selectAll('.teachersoverview_bubble')
   
       groups = svg.selectAll('g');
-  
-      // Fancy transition to make bubbles appear, ending with the
-      // correct radius
-      bubbles.transition()
-          .duration(2000)
-          .attr('r', function (d) { return d.radius; });
+
   
       // Set the simulation's nodes to our newly created nodes array.
       // @v4 Once we set the nodes, the simulation will start running automatically!
