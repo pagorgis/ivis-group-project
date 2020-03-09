@@ -619,6 +619,8 @@ class CoursesOverview extends Component {
   function deselectCourse(path) {
     //Unselect previous teacher
 
+    propfunction(null);
+    
     var arc = d3.arc().innerRadius(0)
 
     var selectedBubble =d3.select(".coursesoverview_selected")

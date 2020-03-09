@@ -504,6 +504,7 @@ class TeachersOverview extends Component {
      */
     function deselectTeacher() {
       //Unselect previous teacher
+      propfunction(null);
   
       d3.select(".teachersoverview_selected")
           .classed("teachersoverview_selected", false);

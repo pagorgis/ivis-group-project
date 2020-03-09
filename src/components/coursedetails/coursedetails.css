@@ -1,5 +1,18 @@
 .coursedetails {
     max-height: 50%;
     margin-top: 5%;
+    width: 100%;
+}
+
+.c-overview-message {
+    text-align: center;
+    margin-top: 25%;
+}
+
+#course_info {
+    width: 80%
+}
+
+#my_dataviz {
     width: 80%;
 }

@@ -66,8 +66,8 @@ class App extends Component {
               {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} /> : null}
             </div>
             <div className="flex-2">
-              {this.state.active_teacher === null ? null : <TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)}/>}
-              {this.state.active_course === null ? null : <CourseDetails active_course={this.state.active_course} active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} />}
+              {<TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)}/>}
+              {<CourseDetails active_course={this.state.active_course} active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} />}
             </div>
           </div>
         </div>

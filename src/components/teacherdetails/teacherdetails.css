@@ -13,3 +13,8 @@
 .td-flex-2 {
     width: 30%;
 }
+
+.t-overview-message {
+    text-align: center;
+    margin-top: 20%;
+}

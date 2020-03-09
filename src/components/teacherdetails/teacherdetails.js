@@ -24,9 +24,13 @@ class TeacherDetails extends Component {
   }
 
   render() {
-    return (
-      <div className="teacherdetails">
-        <StackedBar active_teacher={this.state.active_teacher}/>
+
+      var displayContent;
+
+      if(this.state.active_teacher === null) {
+        displayContent = <div><h4 className="t-overview-message">Select a teacher to display the teacher’s information here</h4></div>
+      } else {
+        displayContent = <><StackedBar active_teacher={this.state.active_teacher}/>
         <div className="td-flex-container">
           <div className="td-flex-1">
             <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} />
@@ -34,7 +38,12 @@ class TeacherDetails extends Component {
           <div className="td-flex-2">
             <PieChart active_teacher={this.state.active_teacher} active_course={this.state.active_course} />
           </div>
-        </div>  
+        </div></>
+      }
+
+    return (
+      <div className="teacherdetails">
+        {displayContent}
       </div>
     );
   }

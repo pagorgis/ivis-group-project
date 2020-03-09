@@ -13,21 +13,29 @@ class CourseDetails extends Component {
   }
 
   componentDidMount() {
-    this.drawStackedBarCharts();
+    if(this.state.active_course !== null) {
+      this.drawStackedBarCharts();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.active_course !== prevState.active_course) {
+      console.log("Trigger1");
       this.setState({ active_course: this.props.active_course });
-      d3.select("#course_info").selectAll("*").remove();
-      d3.select("#my_dataviz").selectAll("*").remove();
-      this.drawStackedBarCharts();
+      if(this.state.active_course !== null) {
+        d3.select("#my_dataviz").selectAll("*").remove();
+        d3.select("#course_info").selectAll("*").remove();
+        this.drawStackedBarCharts();
+      }
     }
     if (this.props.active_teacher !== prevState.active_teacher) {
+      console.log("Trigger2");
       this.setState({ active_teacher: this.props.active_teacher });
-      d3.select("#course_info").selectAll("*").remove();
-      d3.select("#my_dataviz").selectAll("*").remove();
-      this.drawStackedBarCharts();
+      if(this.state.active_course !== null) {
+        d3.select("#my_dataviz").selectAll("*").remove();
+        d3.select("#course_info").selectAll("*").remove();
+        this.drawStackedBarCharts();
+      }
     }
   }
 
@@ -62,7 +70,7 @@ class CourseDetails extends Component {
     var y_height;
 
     //details
-    var svg_course = d3.select("#course_info")
+    var svg_course = d3.select("#my_dataviz")
     .append("svg")
     //.attr("width", width + margin.left + margin.right)
     //.attr("height", 80)
@@ -394,10 +402,16 @@ class CourseDetails extends Component {
 
   render() {
 
+    var displayContent;
+    if(this.state.active_course === null) {
+      displayContent = <div><h4 className="c-overview-message">Select a course to display the course’s information here</h4></div>
+    } else {
+      displayContent = <><div id="course_info"></div><div id="my_dataviz"></div></>
+    }
+
     return (
       <div className="coursedetails">
-        <div id="course_info"></div>
-        <div id="my_dataviz"></div>
+        {displayContent}
       </div>
     );
   }
