@@ -101,7 +101,7 @@ class Icicle extends Component {
     var clickFromOutside = this.props.courseClick;
     var teacherIdData = this.state.teachers_data[this.state.active_teacher-1];
     var data = this.filterData(teacherIdData);
-    var width = 300;
+    var width = 350;
     var height = 150;
     var color = d3.scaleOrdinal(['#E4A41A', '#3662F4']);
 
@@ -136,7 +136,7 @@ class Icicle extends Component {
         .attr("viewBox", [0, 0, width, height])
         //.attr('width', width),
         //.attr('height', height)
-        .style("font-size", "9px ");
+        .style("font-size", "10px ");
 
     const cell = svg
       .selectAll("g")
