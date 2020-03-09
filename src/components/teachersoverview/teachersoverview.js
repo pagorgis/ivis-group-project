@@ -8,12 +8,13 @@ class TeachersOverview extends Component {
     super(props);
     this.state = {
       teachers_data: require('../../data/Teachers.json'),
-      active_teacher: this.props.active_teacher
+      active_teacher: this.props.active_teacher,
+      //bubbleChart = this.bubbleChart(this.state.active_teacher)
     }
   }
 
   componentDidMount() {
-    let myBubbleChart = this.bubbleChart(2);
+    let myBubbleChart = this.bubbleChart(this.state.active_teacher);
     myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
     //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
   }
@@ -21,15 +22,21 @@ class TeachersOverview extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.active_teacher !== prevState.active_teacher) {
       this.setState({ active_teacher: this.props.active_teacher });
-      //d3.select("#teachersoverview_vis").selectAll("*").remove();
-      //let myBubbleChart = this.bubbleChart();
-      //myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
+    }
+    if (this.props.clicked_teacher_from_outside !== prevProps.clicked_teacher_from_outside) {
+      var propfunction = this.props.resetTeacherFromOutside;
+      propfunction();
+      if(this.state.active_teacher !== null && !this.props.clicked_teacher_from_outside) {
+        d3.select("#teachersoverview_vis").selectAll("*").remove();
+        let myBubbleChart = this.bubbleChart(this.state.active_teacher);
+        myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
+      }
     }
   }
 
   bubbleChart(teacherIdd) {
     var propfunction = this.props.teacherIdUpdate;
-    var teacherId = this.state.active_teacher;
+    //var teacherId = this.state.active_teacher;
     const rawData = this.state.teachers_data;
     let teachersNames = this.teachersNames(rawData);
     let coursesCodes = this.coursesCodes(rawData);

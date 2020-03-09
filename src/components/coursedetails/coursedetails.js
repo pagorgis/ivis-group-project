@@ -42,6 +42,7 @@ class CourseDetails extends Component {
   drawStackedBarCharts() {
     var propfunction = this.props.teacherIdUpdate;
     var active_teacher = this.state.active_teacher;
+    var clickFromOutside = this.props.teacherClick;
 
     var tooltip=d3.select("#my_dataviz")
     .append("div")
@@ -293,7 +294,8 @@ class CourseDetails extends Component {
           })
           .on("click", d => {
             if (d.id <= 84) {
-              propfunction(d.id)
+              propfunction(d.id);
+              clickFromOutside();
             }
           });
   //show the  comparison to the plan    
