@@ -18,7 +18,7 @@ import {
 } from "d3";
 //import Teachers from "../../data/Teachers.json";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Row, Dropdown} from "react-bootstrap";
+import {Row, Dropdown,DropdownButton} from "react-bootstrap";
 import './stackedbar.css';
 
 
@@ -248,7 +248,7 @@ class StackedBar extends Component {
       .attr("x2", function(){ return x(zeroLineEnd)})
       .attr("y1", margin.top+3)
       .attr("y2", margin.top+40)
-      .attr("stroke-width", 5)
+      .attr("stroke-width", 2)
       .attr("stroke", "black")
 
     }
@@ -271,20 +271,24 @@ class StackedBar extends Component {
           <div id="myVis">
             <svg id="mySVG" ></svg>
           </div>
-          <div style={{paddingTop:"1rem"}}>
-          <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">Legend</Dropdown.Toggle>
-                <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Bonus from previous year</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="red-box" style={{marginRight: 20 + 'px'}}></div>Penalty from previous year</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="orange-box" style={{marginRight: 20 + 'px'}}></div>Total Autumn semester</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="blue-box" style={{marginRight: 20 + 'px'}}></div>Total Spring semester</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="yellow-box" style={{marginRight: 20 + 'px'}}></div>Self-development</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="pink-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
-                  <Dropdown.Item href="#/action-1"><div className="box" id="white-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
-                  <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
-                </Dropdown.Menu>
-              </Dropdown>
+          <div  style={{paddingTop:"1rem"}}>
+          <div>
+        <DropdownButton
+          key={'left'}
+          id={`dropdown-button-drop-left`}
+          drop={'left'}
+          variant="secondary"
+          title={`Legend`}>
+          <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Bonus from previous year</Dropdown.Item>
+          <Dropdown.Item href="#/action-1"><div className="box" id="red-box" style={{marginRight: 20 + 'px'}}></div>Penalty from previous year</Dropdown.Item>
+          <Dropdown.Item href="#/action-1"><div className="box" id="orange-box" style={{marginRight: 20 + 'px'}}></div>Total Autumn semester</Dropdown.Item>
+          <Dropdown.Item href="#/action-1"><div className="box" id="blue-box" style={{marginRight: 20 + 'px'}}></div>Total Spring semester</Dropdown.Item>
+          <Dropdown.Item href="#/action-1"><div className="box" id="yellow-box" style={{marginRight: 20 + 'px'}}></div>Self-development</Dropdown.Item>
+          <Dropdown.Item href="#/action-1"><div className="box" id="pink-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
+          <Dropdown.Item href="#/action-1"><div className="box" id="white-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
+          <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
+        </DropdownButton>{' '}
+  </div>
           </div>
         </Row>
       </React.Fragment>
