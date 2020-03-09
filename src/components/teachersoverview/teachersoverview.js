@@ -18,8 +18,18 @@ class TeachersOverview extends Component {
     //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active_teacher !== prevState.active_teacher) {
+      this.setState({ active_teacher: this.props.active_teacher });
+      //d3.select("#teachersoverview_vis").selectAll("*").remove();
+      //let myBubbleChart = this.bubbleChart();
+      //myBubbleChart('#teachersoverview_vis', this.state.teachers_data);
+    }
+  }
+
   bubbleChart() {
     var propfunction = this.props.teacherIdUpdate;
+    var teacherId = this.state.active_teacher;
     const rawData = this.state.teachers_data;
     let teachersNames = this.teachersNames(rawData);
     let coursesCodes = this.coursesCodes(rawData);

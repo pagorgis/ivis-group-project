@@ -4,10 +4,11 @@ import './auto_complete.css';
 import * as d3 from "d3";
 
 class CoursesOverview extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      courses_data: require('../../data/Courses.json')
+      courses_data: require('../../data/Courses.json'),
+      active_course: this.props.active_course
     }
   }
 
@@ -17,8 +18,19 @@ class CoursesOverview extends Component {
     //this.autocomplete(document.getElementById("teachersoverview_teacherSearch"), this.teachersNames(this.state.teachers_data));
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active_course !== prevState.active_course) {
+      this.setState({ active_course: this.props.active_course });
+      //d3.select("#coursesoverview_vis_vis").selectAll("*").remove();
+      //let myBubbleChart = this.bubbleChart();
+      //myBubbleChart('#coursesoverview_vis', this.state.courses_data);
+    }
+  }
+  
+
   bubbleChart() {
     var propfunction = this.props.courseIdUpdate;
+    var courseId = this.state.active_course;
     const rawData = this.state.courses_data;
     let coursesNames = this.coursesNames(rawData);
     // Constants for sizing
