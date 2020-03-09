@@ -8,6 +8,14 @@
     height:100%;
 }
 
+#coursesoverview_title{
+     text-align: right;
+ }
+
+#coursesoverview_title h1{
+    font-size:1em;
+}
+
 
 /*
 Menu for the filter fonction
@@ -116,11 +124,11 @@ Visualization
  */
 
 #coursesoverview_vis {
-    height: 700px;
+    height:100%;
     clear: both;
     margin:auto;
-    padding-bottom:20px;
-    padding-top:20px;
+    padding-bottom:1em;
+    padding-top:1em;
 }
 
 .coursesoverview_selected{
