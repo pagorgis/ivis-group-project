@@ -122,6 +122,10 @@ Legend
 Visualization
  */
 
+.bubble:hover{
+    cursor:pointer;
+}
+
 #coursesoverview_vis {
     height:100%;
     clear: both;

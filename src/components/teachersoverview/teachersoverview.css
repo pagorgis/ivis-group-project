@@ -139,6 +139,11 @@ Legend
 Visualization
  */
 
+
+.teachersoverview_bubble:hover{
+    cursor:pointer;
+}
+
 #teachersoverview_vis {
     clear: both;
     margin:auto;

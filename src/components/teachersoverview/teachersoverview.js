@@ -485,7 +485,7 @@ class TeachersOverview extends Component {
       // change outline to indicate hover state.
       d3.select(this).attr('r', function(d){return d.radius+5});
   
-      var content = '<span class="name">Title: </span><span class="value">' +
+      var content = '<span class="name">Name: </span><span class="value">' +
           d.name +
           '</span><br/>' +
           '<span class="name">Position: </span><span class="value">' +
