@@ -273,12 +273,12 @@ class StackedBar extends Component {
           </div>
           <div  style={{paddingTop:"1rem"}}>
           <div>
-            <DropdownButton
-              key={'left'}
-              id={`dropdown-button-drop-left`}
-              drop={'left'}
-              variant="success"
-              title={`Legend`}>
+          <DropdownButton
+            alignRight
+            variant="success"
+            title="Legend"
+            id="dropdown-menu-align-right"
+          >
                 <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Bonus from previous year</Dropdown.Item>
                 <Dropdown.Item href="#/action-1"><div className="box" id="red-box" style={{marginRight: 20 + 'px'}}></div>Penalty from previous year</Dropdown.Item>
                 <Dropdown.Item href="#/action-1"><div className="box" id="orange-box" style={{marginRight: 20 + 'px'}}></div>Total Autumn semester</Dropdown.Item>
@@ -287,7 +287,7 @@ class StackedBar extends Component {
                 <Dropdown.Item href="#/action-1"><div className="box" id="pink-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
                 <Dropdown.Item href="#/action-1"><div className="box" id="white-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
                 <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
-            </DropdownButton>{' '}
+          </DropdownButton>
           </div>
           </div>
         </Row>
