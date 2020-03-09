@@ -266,8 +266,14 @@ class StackedBar extends Component {
             <div className="heading-box">
               <h1 style={{ width: '10rem' },{fontSize: "1.5rem"}} >{this.state.active_teacher === null ? null : t_data.name}</h1>
               <h3 style={{ width: '10rem' },{fontSize: "1rem"}} >{this.state.active_teacher === null ? null : t_data.position}, {this.state.active_teacher === null ? null : t_data.dept}</h3>
-              <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">Show Legend</Dropdown.Toggle>
+            </div>
+          </div>
+          <div id="myVis">
+            <svg id="mySVG" ></svg>
+          </div>
+          <div style={{paddingTop:"1rem"}}>
+          <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">Legend</Dropdown.Toggle>
                 <Dropdown.Menu>
                 <Dropdown.Item href="#/action-1"><div className="box" id="green-box" style={{marginRight: 20 + 'px'}}></div>Bonus from previous year</Dropdown.Item>
                   <Dropdown.Item href="#/action-1"><div className="box" id="red-box" style={{marginRight: 20 + 'px'}}></div>Penalty from previous year</Dropdown.Item>
@@ -279,10 +285,6 @@ class StackedBar extends Component {
                   <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
                 </Dropdown.Menu>
               </Dropdown>
-            </div>
-          </div>
-          <div id="myVis">
-            <svg id="mySVG" ></svg>
           </div>
         </Row>
       </React.Fragment>
