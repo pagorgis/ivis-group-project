@@ -77,7 +77,7 @@ class StackedBar extends Component {
     bonus=teacherdata.gru_balance_19;
   }
 
-    var rest=(teacherdata.kontering-startFromPenalty-teacherdata.gru_ht-teacherdata.gru_vt-teacherdata.self_dev).toFixed(2);
+    var rest=(teacherdata.kontering-bonus-startFromPenalty-teacherdata.gru_ht-teacherdata.gru_vt-teacherdata.self_dev).toFixed(2);
     const checkRest=(rest)=>{
         if(rest>0){
             return rest;
@@ -173,7 +173,7 @@ class StackedBar extends Component {
 
     var mouseoverKontering = function(d) {
       tooltip
-        .html(("Kontering: "+(teacherdata.kontering).toFixed(2)+"%"))
+        .html(("Year's goal: "+(teacherdata.kontering).toFixed(2)+"%"))
           .style("opacity", 1)
       select(this)
             .style("stroke", "black")
@@ -286,7 +286,7 @@ class StackedBar extends Component {
                 <Dropdown.Item href="#/action-1"><div className="box" id="yellow-box" style={{marginRight: 20 + 'px'}}></div>Self-development</Dropdown.Item>
                 <Dropdown.Item href="#/action-1"><div className="box" id="pink-box" style={{marginRight: 20 + 'px'}}></div>Extra</Dropdown.Item>
                 <Dropdown.Item href="#/action-1"><div className="box" id="white-box" style={{marginRight: 20 + 'px'}}></div>Unplanned</Dropdown.Item> 
-                <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Kontering</Dropdown.Item> 
+                <Dropdown.Item href="#/action-1"><div className="kontLine" style={{marginRight: 20 + 'px'}}></div>Year's goal</Dropdown.Item> 
           </DropdownButton>
           </div>
           </div>
