@@ -19,28 +19,30 @@ body {
 .staffiz-title {
     margin-left: 0.2em;
     margin-bottom:0;
-    font-size:1.5em;
+    font-size:2em;
 }
 
 .flex-container {
     display: flex;
+    height:100%;
 }
 
 .flex-1 {
     margin-left:1%;
-    margin-right:0%;
-    width: 48%;
+    margin-right:2%;
+    width: 45%;
     margin-bottom:1em;
 }
 
 .flex-2 {
     margin-left: 0%;
     width: 50%;
+    margin-bottom:1em;
 }
 
 .teachers-tab, .courses-tab {
     cursor: pointer;
-    font-size:1em;
+    font-size:1.5em;
     padding:0.5em;
     position:relative;
     margin: 0.5em 0 0 0;
