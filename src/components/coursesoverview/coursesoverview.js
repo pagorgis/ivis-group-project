@@ -215,7 +215,14 @@ class CoursesOverview extends Component {
       .attr('id', "coursesoverview_svgCoursesOverview")
       .attr("viewBox", '0 0 '+width+' '+height)
 
-
+      svg.append('text')
+          .attr('class', 'teachersoverview_title')
+          .attr('x', width/2)
+          .attr('y', "1.5em")
+          .attr('text-anchor', 'middle')
+          .attr("font-size", "2em")
+          .attr("opacity", 0.5)
+          .text("Planned hours vs allocated hours");
 
       var elem = svg.selectAll("g")
         .data(nodes, function (d) { return d.id; });
@@ -1074,7 +1081,7 @@ class CoursesOverview extends Component {
     return (
       <div className="coursesoverview">
         <div className="containerOverviews">
-          <div id="coursesoverview_toolbar">
+            <div id="coursesoverview_toolbar">
               <div id="coursesoverview_filter">
               <div id="coursesoverview_filterButton" className = "button toolbarElement"> Filter
               </div>

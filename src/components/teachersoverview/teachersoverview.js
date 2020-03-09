@@ -39,8 +39,8 @@ class TeachersOverview extends Component {
 
 
     var filterSplitCenters = {
-      1: { x: width / 2, y: height / 2.7 },
-      0: { x: width / 2, y: 2*height / 3.4 }
+      1: { x: width / 2, y: height / 2.4 },
+      0: { x: width / 2, y: 2*height / 3 }
     };
   
     // Y locations of the filter split titles.
@@ -172,8 +172,15 @@ class TeachersOverview extends Component {
           .attr('id', "teachersoverview_svgTeachersOverview")
           .attr("viewBox", '0 0 '+width+' '+height)
 
-          // .attr('width', width)
-          // .attr('height', height)
+      svg.append('text')
+          .attr('class', 'teachersoverview_title')
+          .attr('x', width/2)
+          .attr('y', "1.50" +
+              "2em")
+          .attr('text-anchor', 'middle')
+          .attr("font-size", "2em")
+          .attr("opacity", 0.5)
+          .text("Hours assigned vs Year's goal");
   
       var elem = svg.selectAll("g")
           .data(nodes, function (d) { return d.id; });
@@ -189,13 +196,13 @@ class TeachersOverview extends Component {
           .attr('r', 0)
           .data(nodes, function (d) { return d.id; })
           .attr('fill', function(d){
-            if (d.value>0){return '#60B766'}
-            else if (d.value<0){return "#DC2F2F"}
+            if (d.value>5){return '#60B766'}
+            else if (d.value<-5){return "#DC2F2F"}
             else return '#5D41E6';
           })
           .attr('stroke', function(d){
-            if (d.value>0){return '#386C3B'}
-            else if (d.value<0){return "#801B1B"}
+            if (d.value>5){return '#386C3B'}
+            else if (d.value<-5){return "#801B1B"}
             else return '#332480';
           })
           .attr('stroke-width', 2)
@@ -544,7 +551,7 @@ class TeachersOverview extends Component {
           .attr("id", "selectTextBody")
           .style('text-align', 'center')
           .style('color', 'white')
-          .style('background-color', d => d.value > 0 ? '#60B766' : (d.value < 0 ? '#DC2F2F' : '#5D41E6'))
+          .style('background-color', d => d.value > 5 ? '#60B766' : (d.value < -5 ? '#DC2F2F' : '#5D41E6'))
           .html(function(d){
             propfunction(d.id);
             var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
@@ -590,7 +597,7 @@ class TeachersOverview extends Component {
             .attr("id", "selectTextBody")
             .style('text-align', 'center')
             .style('color', 'white')
-            .style('background-color', d => d.value > 0 ? '#60B766' : (d.value < 0 ? '#DC2F2F' : '#5D41E6'))
+            .style('background-color', d => d.value > 5 ? '#60B766' : (d.value < -5 ? '#DC2F2F' : '#5D41E6'))
             .html(function(d){
               propfunction(d.id);
               var text = "<p style='margin: 0'>" + d.name + "<p style='margin-top:10px'>"+ d.value + "%";
@@ -650,7 +657,7 @@ class TeachersOverview extends Component {
       menuSvg.append('text')
           .attr("x", 80)
           .attr("y", 103)
-          .text("Assigned hours  =  Year's goal")
+          .text("Assigned hours  ~  Year's goal")
           .attr("font-family", "sans-serif")
           .attr("font-size", "0.9em")
           .attr("fill", "black");
@@ -987,7 +994,10 @@ class TeachersOverview extends Component {
               </div>
               </div>
           </div>
+          {/*<div className="teachersoverview_title"><h1>Hours assigned vs Year's goal</h1></div>*/}
+
           <div id="teachersoverview_vis"></div>
+
 
         </div>
       </div>
