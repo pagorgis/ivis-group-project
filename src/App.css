@@ -148,3 +148,8 @@ body {
    #pink-box {
     background:pink;
    }
+
+   .profile{
+       width: 160px;
+       height: 125px;
+   }

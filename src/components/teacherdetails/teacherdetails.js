@@ -27,7 +27,7 @@ class TeacherDetails extends Component {
     return (
       <div className="teacherdetails">
         <StackedBar active_teacher={this.state.active_teacher}/>
-        <div className="td-flex-container">
+        <div className="td-flex-container" style={{paddingTop:"60px"}}>
           <div className="td-flex-1">
             <Icicle active_teacher={this.state.active_teacher} courseIdUpdate={this.props.courseIdUpdate} />
           </div>
