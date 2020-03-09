@@ -173,7 +173,7 @@ class StackedBar extends Component {
 
     var mouseoverKontering = function(d) {
       tooltip
-        .html(("Year's goal: "+(teacherdata.kontering).toFixed(2)+"%"))
+        .html(("<b>Year's goal:</b> "+(teacherdata.kontering).toFixed(2)+"%"))
           .style("opacity", 1)
       select(this)
             .style("stroke", "black")
