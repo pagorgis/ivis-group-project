@@ -56,9 +56,9 @@ class App extends Component {
 
   handleOverviewChange(tab) {
     if (tab === "teachers") {
-      this.setState({tab: "courses", clicked_teacher_from_outside: false, clicked_course_from_outside: false, active_teacher: null, active_course: null});
+      this.setState({tab: "courses", clicked_teacher_from_outside: false, clicked_course_from_outside: false});
     } else if (tab === "courses") {
-      this.setState({tab: "teachers", clicked_teacher_from_outside: false, clicked_course_from_outside: false, active_teacher: null, active_course: null});
+      this.setState({tab: "teachers", clicked_teacher_from_outside: false, clicked_course_from_outside: false});
     }
   }
 
