@@ -20,6 +20,28 @@ body {
     margin-left: 0.2em;
     margin-bottom:0;
     font-size:2em;
+    background-color: rgba(0, 0, 0, 0.0);
+    border-color: rgba(0, 0, 0, 0.0);
+    color: white;
+    outline: none;
+}
+
+.info-title {
+    margin-bottom:0;
+    font-size:2em;
+    background-color: rgba(0, 0, 0, 0.0);
+    border-color: rgba(0, 0, 0, 0.0);
+    color: white;
+    outline: none;
+    float: right;
+}
+
+.staffiz-title:focus {
+    outline: none;
+}
+
+.info-title:focus {
+    outline: none;
 }
 
 .flex-container {

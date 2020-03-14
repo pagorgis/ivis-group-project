@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-//import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import TeachersOverview from './components/teachersoverview/teachersoverview';
 import CoursesOverview from './components/coursesoverview/coursesoverview';
 import TeacherDetails from './components/teacherdetails/teacherdetails';
 import CourseDetails from './components/coursedetails/coursedetails';
+import InfoPage from './components/infopage/infopage';
 //import * as d3 from "d3";
 
 
@@ -14,6 +15,7 @@ class App extends Component {
     super(props);
     this.state = {
       tab: "teachers",
+      infotab: false,
       active_teacher: null,
       active_course: null,
       clicked_teacher_from_outside: false,
@@ -23,11 +25,21 @@ class App extends Component {
     }
 
     this.handleOverviewChange = this.handleOverviewChange.bind(this);
+    this.clickedStaffiz = this.clickedStaffiz.bind(this);
+    this.clickedInfo = this.clickedInfo.bind(this);
   }
 
   componentDidMount() {
     //console.log(this.state.courses_data);
     //console.log(this.state.teachers_data);
+  }
+
+  clickedInfo() {
+    this.setState({infotab: true})
+  }
+
+  clickedStaffiz() {
+    this.setState({infotab: false})
   }
 
   teacherIdUpdate(id) {
@@ -63,32 +75,41 @@ class App extends Component {
   }
 
   render() {
-    return(
-        <div className="App">
-          <div className="staffiz-banner">
-            <h1 className="staffiz-title">Staffiz</h1>
+
+    let visualization = 
+      <>
+        <div className="overview-bar">
+          <div className="divTeachersTab">
+            <h2 className={this.state.tab === "teachers" ? "teachers-tab active" : "teachers-tab"} onClick={() => this.handleOverviewChange("courses")}>Teachers</h2>
+            <div className="hideRectangleTeachers"></div>
           </div>
-          <div className="overview-bar">
-            <div className="divTeachersTab">
-              <h2 className={this.state.tab === "teachers" ? "teachers-tab active" : "teachers-tab"} onClick={() => this.handleOverviewChange("courses")}>Teachers</h2>
-              <div className="hideRectangleTeachers"></div>
-            </div>
-            <div className="divCoursesTab">
-              <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
-              <div className="hideRectangleCourses"></div>
-            </div>
-          </div>
-          <div className="flex-container">
-            <div className="flex-1">
-              {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} resetTeacherFromOutside={() => this.resetTeacherFromOutside()} clicked_teacher_from_outside={this.state.clicked_teacher_from_outside}/> : null}
-              {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} resetCourseFromOutside={() => this.resetCourseFromOutside()} clicked_course_from_outside={this.state.clicked_course_from_outside}/> : null}
-            </div>
-            <div className="flex-2">
-              {<TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} courseClick={() => this.clickedCourseFromOutside()}/>}
-              {<CourseDetails active_course={this.state.active_course} active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} teacherClick={() => this.clickedTeacherFromOutside()}/>}
-            </div>
+          <div className="divCoursesTab">
+            <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
+            <div className="hideRectangleCourses"></div>
           </div>
         </div>
+        <div className="flex-container">
+          <div className="flex-1">
+            {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} resetTeacherFromOutside={() => this.resetTeacherFromOutside()} clicked_teacher_from_outside={this.state.clicked_teacher_from_outside}/> : null}
+            {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} resetCourseFromOutside={() => this.resetCourseFromOutside()} clicked_course_from_outside={this.state.clicked_course_from_outside}/> : null}
+          </div>
+          <div className="flex-2">
+            {<TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} courseClick={() => this.clickedCourseFromOutside()}/>}
+            {<CourseDetails active_course={this.state.active_course} active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} teacherClick={() => this.clickedTeacherFromOutside()}/>}
+          </div>
+        </div>
+      </>
+
+    return(
+      <Router>
+        <div className="App">
+          <div className="staffiz-banner">
+            <button className="staffiz-title" onClick={this.clickedStaffiz}>Staffiz</button>
+            <button className="info-title" onClick={this.clickedInfo}>Info</button>
+          </div>
+        <Route exact path="/" render={() => this.state.infotab ? <InfoPage /> : visualization} />
+      </div>
+      </Router>
     );
   }
 }
