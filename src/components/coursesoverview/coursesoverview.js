@@ -27,10 +27,16 @@ class CoursesOverview extends Component {
     }
     if (this.props.clicked_course_from_outside !== prevProps.clicked_course_from_outside) {
       var propfunction = this.props.resetCourseFromOutside;
+      var resetFunction = this.props.resetReset;
       propfunction();
-      if(this.state.active_course !== null && !this.props.clicked_course_from_outside) {
+      if (this.state.active_course !== null && !this.props.clicked_course_from_outside) {
         d3.select("#coursesoverview_vis").selectAll("*").remove();
         let myBubbleChart = this.bubbleChart(this.state.active_course);
+        myBubbleChart('#coursesoverview_vis', this.state.courses_data);
+      } else if (this.props.clicked_reset) {
+        resetFunction();
+        d3.select("#coursesoverview_vis").selectAll("*").remove();
+        let myBubbleChart = this.bubbleChart(null);
         myBubbleChart('#coursesoverview_vis', this.state.courses_data);
       }
     }
@@ -893,6 +899,7 @@ class CoursesOverview extends Component {
 
 
   function createLegend(){
+    d3.select("#coursesoverview_legendMenu").selectAll("*").remove();
     var menuSvg = d3.select("#coursesoverview_legendMenu")
         .append('svg')
         .attr('id', "coursesoverview_legendMenuSvg")
