@@ -109,17 +109,15 @@ class InfoPage extends Component {
 
           <Row className="justify-content-center">
             <Card className="profile-cards" style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="https://sarangglobaltours.com/wp-content/uploads/2014/02/team.png" />
+              <Card.Img variant="top" src={require("../../photos/lb.jpg")} />
               <Card.Body>
                 <Card.Title><b>Leo Bergqvist</b></Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">UX design, Presentation, Front-end</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
+                  Responsible for icicle visual structure on teacher page, presenting work and involved in UX design of tool  
                 </Card.Text>
-                <Card.Link href="#">Mail</Card.Link>
-                <Card.Link href="#">GitHub</Card.Link>
-                <Card.Link href="#">LinkedIn</Card.Link>
+                <Card.Link href="mailto:leo.bergqvist@hotmail.se">Mail</Card.Link>
+                <Card.Link href="https://github.com/LeoBergqvist/">GitHub</Card.Link>
               </Card.Body>
             </Card>
             <Card className="profile-cards" style={{ width: '20rem' }}>
