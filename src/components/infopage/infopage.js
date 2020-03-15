@@ -64,17 +64,18 @@ class InfoPage extends Component {
               </Card.Body>
             </Card>
             <Card className="profile-cards" style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="https://sarangglobaltours.com/wp-content/uploads/2014/02/team.png" />
+              <Card.Img variant="top" src={require("../../photos/cx.JPG")} />
               <Card.Body>
-                <Card.Title><b>Cecilia Xia</b></Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                <Card.Title><b>Ziqi Xia</b></Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">Front-end</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
+                  Responsible for creating the interactable prototype for user testing, creating the visualization of a teacher's detailed information, 
+                  which includes the teacher profile and stacked bar showing the percentage of various work allocation from each teacher,
+                  and adapt the function in the React environment. 
                 </Card.Text>
-                <Card.Link href="#">Mail</Card.Link>
-                <Card.Link href="#">GitHub</Card.Link>
-                <Card.Link href="#">LinkedIn</Card.Link>
+                <Card.Link href="mailto:ceciliaxia118@gmail.com">Mail</Card.Link>
+                <Card.Link href="https://github.com/CeciliaXZQ">GitHub</Card.Link>
+                <Card.Link href="https://www.linkedin.com/in/ziqi-xia-a9935a115/">LinkedIn</Card.Link>
               </Card.Body>
             </Card>
           </Row>
