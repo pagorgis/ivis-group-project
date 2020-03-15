@@ -1,3 +1,27 @@
 .profile-cards {
     margin: 1em;
 }
+
+.profiles {
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+.infotext {
+    margin-top: 1em;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.project-tools {
+    line-height: 0.5em;
+}
+
+@media (max-width: 800px) {
+    .infotext {
+        text-align: center;
+    }
+    .the-team {
+        text-align: center;
+    }
+}
