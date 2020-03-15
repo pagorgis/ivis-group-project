@@ -62,12 +62,16 @@ body {
     margin-bottom:1em;
 }
 
-.teachers-tab, .courses-tab {
+.teachers-tab, .courses-tab, .reset-button {
     cursor: pointer;
     font-size:1.5em;
     padding:0.5em;
     position:relative;
     margin: 0.5em 0 0 0;
+}
+
+.reset-button {
+    color: red;
 }
 
 .active {
@@ -107,6 +111,10 @@ body {
 }
 
 .divTeachersTab{
+    position:relative;
+}
+
+.reset-tab {
     position:relative;
 }
 

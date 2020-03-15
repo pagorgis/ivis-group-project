@@ -20,6 +20,7 @@ class App extends Component {
       active_course: null,
       clicked_teacher_from_outside: false,
       clicked_course_from_outside: false,
+      clicked_reset: false,
       teachers_data: require('./data/Teachers.json'),
       courses_data: require('./data/Courses.json')
     }
@@ -27,6 +28,7 @@ class App extends Component {
     this.handleOverviewChange = this.handleOverviewChange.bind(this);
     this.clickedStaffiz = this.clickedStaffiz.bind(this);
     this.clickedInfo = this.clickedInfo.bind(this);
+    this.clickedReset = this.clickedReset.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +42,14 @@ class App extends Component {
 
   clickedStaffiz() {
     this.setState({infotab: false})
+  }
+
+  clickedReset() {
+    this.setState({ clicked_teacher_from_outside: true, clicked_course_from_outside: true, active_teacher: null, active_course: null, clicked_reset: true})
+  }
+
+  resetReset() {
+    this.setState({clicked_reset: false})
   }
 
   teacherIdUpdate(id) {
@@ -87,11 +97,31 @@ class App extends Component {
             <h2 className={this.state.tab === "courses" ? "courses-tab active" : "courses-tab"} onClick={() => this.handleOverviewChange("teachers")}>Courses</h2>
             <div className="hideRectangleCourses"></div>
           </div>
+          <div className="reset-tab">
+            <h2 className="reset-button" onClick={() => this.clickedReset()}>Reset</h2>
+            <div className="hideRectangleCourses"></div>
+          </div>
         </div>
         <div className="flex-container">
           <div className="flex-1">
-            {this.state.tab === "teachers" ? <TeachersOverview active_teacher={this.state.active_teacher} teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} resetTeacherFromOutside={() => this.resetTeacherFromOutside()} clicked_teacher_from_outside={this.state.clicked_teacher_from_outside}/> : null}
-            {this.state.tab === "courses" ? <CoursesOverview active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} resetCourseFromOutside={() => this.resetCourseFromOutside()} clicked_course_from_outside={this.state.clicked_course_from_outside}/> : null}
+            {this.state.tab === "teachers" ? <TeachersOverview 
+              active_teacher={this.state.active_teacher} 
+              teacherIdUpdate={newValue => this.teacherIdUpdate(newValue)} 
+              resetTeacherFromOutside={() => this.resetTeacherFromOutside()} 
+              clicked_teacher_from_outside={this.state.clicked_teacher_from_outside}
+              clicked_reset={this.state.clicked_reset}
+              resetReset={() => this.resetReset()} 
+              /> 
+              : null}
+            {this.state.tab === "courses" ? <CoursesOverview 
+              active_course={this.state.active_course} 
+              courseIdUpdate={newValue => this.courseIdUpdate(newValue)} 
+              resetCourseFromOutside={() => this.resetCourseFromOutside()} 
+              clicked_course_from_outside={this.state.clicked_course_from_outside}
+              clicked_reset={this.state.clicked_reset}
+              resetReset={() => this.resetReset()} 
+              /> 
+              : null}
           </div>
           <div className="flex-2">
             {<TeacherDetails active_teacher={this.state.active_teacher} active_course={this.state.active_course} courseIdUpdate={newValue => this.courseIdUpdate(newValue)} courseClick={() => this.clickedCourseFromOutside()}/>}
