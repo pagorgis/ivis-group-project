@@ -53,13 +53,18 @@ class InfoPage extends Component {
               <li>Frame showing detailed course information with bar charts for course parts and showing goal hours reached</li>
             </ul>
           <h2>Learning objectives reached</h2>
-            <p>Answer here...</p>
+            <p>We as a group worked towards making a comprehensible staffing tool that followed the visual information seeking mantra of: overview, zoom, filtering and details on demand. We learned 
+              to assess the functionality of a system for meeting end user needs by collaborating with our stakeholders, and by by learning to criticize a design from perspectives of effectiveness, 
+              efficiency, usability and usefulness we learned to improve our own. By building this tool we have learned the practical tools necessary to build interactive visualizations and design 
+              them in a way as to facilitate action and insights on our stakeholders behalf. Lastly we improved our presentation skills, both to peers and stakeholders with the feedback we received 
+              throughout the course.</p>
           <h2>Tools used</h2>
             <p className="project-tools"><b>D3</b> - JavaScript library to visualize data</p>
             <p className="project-tools"><b>React</b> - Front-end framework (JavaScript)</p>
             <p className="project-tools"><b>Firebase</b> - Page hosting</p>
             <p className="project-tools"><b>GitHub</b> - Version control</p>
             <p className="project-tools"><b>FB Messenger</b> - Communication tool</p>
+            <p className="project-tools"><b>Google Drive</b> - File sharing</p>
         </div>
 
         <div className="profiles">
@@ -125,17 +130,18 @@ class InfoPage extends Component {
               </Card.Body>
             </Card>
             <Card className="profile-cards" style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="https://sarangglobaltours.com/wp-content/uploads/2014/02/team.png" />
+              <Card.Img variant="top" src={require("../../photos/dv.jpg")} />
               <Card.Body>
                 <Card.Title><b>Dianne Vasseur</b></Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">UI Design, Design Visual Structure</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
+                Responsible for the design of the Staffiz visualizations, together with two team members. Researching what has been done and performing 
+                brainstorm sessions to come up with a design that is informative, as well as esthetically pleasing and user friendly. Also gained some 
+                step-by-step front-end experience by attempting to partially create the detailed course overview in the React environment.
                 </Card.Text>
-                <Card.Link href="#">Mail</Card.Link>
-                <Card.Link href="#">GitHub</Card.Link>
-                <Card.Link href="#">LinkedIn</Card.Link>
+                <Card.Link href="mailto:dmva@kth.se">Mail</Card.Link>
+                <Card.Link href="https://github.com/Dmvasseur">GitHub</Card.Link>
+                <Card.Link href="https://www.linkedin.com/in/dianne-vasseur-ba06a0133/">LinkedIn</Card.Link>
               </Card.Body>
             </Card>
             <Card className="profile-cards" style={{ width: '20rem' }}>
