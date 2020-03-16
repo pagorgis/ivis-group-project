@@ -66,17 +66,19 @@ class InfoPage extends Component {
           <h1 className="the-team">The team</h1>
           <Row className="justify-content-center">
             <Card className="profile-cards" style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="https://sarangglobaltours.com/wp-content/uploads/2014/02/team.png" />
+              <Card.Img variant="top" src={require("../../photos/pger.jpg")}  />
               <Card.Body>
                 <Card.Title><b>Pierrick Gervasi</b></Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">UX/UI Design, FrontEnd, Data management</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
+                  UI and UX Designer for the tool. Designed a lot of low-fidelity prototypes until reaching our final design.
+                  I also coded the left windows (bubble and bubble pie charts), including filters and search tools.
+                  In addition, I was responsible for Quality. I had a good understanding of the data and kept sure to always
+                  keep in mind the needs of the client.
                 </Card.Text>
-                <Card.Link href="#">Mail</Card.Link>
-                <Card.Link href="#">GitHub</Card.Link>
-                <Card.Link href="#">LinkedIn</Card.Link>
+                <Card.Link href="pierrick.gervasi@gmail.com">Mail</Card.Link>
+                <Card.Link href="https://github.com/PierrickGervasi">GitHub</Card.Link>
+                <Card.Link href="https://www.linkedin.com/in/pierrick-gervasi/">LinkedIn</Card.Link>
               </Card.Body>
             </Card>
             <Card className="profile-cards" style={{ width: '20rem' }}>
