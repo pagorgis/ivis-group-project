@@ -97,6 +97,9 @@ class Icicle extends Component {
   }
 
   drawIcicle() {
+
+    // Based on Mike Bostock's visualization on Observable: https://observablehq.com/@d3/zoomable-icicle
+
     var propfunction = this.props.courseIdUpdate;
     var clickFromOutside = this.props.courseClick;
     var teacherIdData = this.state.teachers_data[this.state.active_teacher-1];
@@ -164,7 +167,6 @@ class Icicle extends Component {
         })
         .style("cursor", "pointer")
         .on("click", d => {
-          // console.log(d);
           if (d.depth === 3) {
             propfunction(d.data.id);
             clickFromOutside();

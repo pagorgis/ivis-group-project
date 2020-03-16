@@ -42,6 +42,9 @@ class TeachersOverview extends Component {
   }
 
   bubbleChart(teacherIdd) {
+
+    // Based on Jim Vallandingham's visualization: https://vallandingham.me/bubble_charts_with_d3v4.html?fbclid=IwAR2pLYmsbzWFu3pO2wcW0BTVDQ952_hP-uSGTOfMkBt4N5FiLZ2x1qxGuqQ
+
     var propfunction = this.props.teacherIdUpdate;
     //var teacherId = this.state.active_teacher;
     const rawData = this.state.teachers_data;
@@ -58,8 +61,6 @@ class TeachersOverview extends Component {
     // Locations to move bubbles towards, depending
     // on which view mode is selected.
     var center = { x: width / 2, y: height / 2 };
-
-    console.log(center);
 
 
     var filterSplitCenters = {
@@ -285,7 +286,6 @@ class TeachersOverview extends Component {
           })
   
       document.onclick = function(e) {
-        console.log(e.x);
         if (e.target === document.getElementById("teachersoverview_svgTeachersOverview")){
           deselectTeacher();
           document.getElementById("teachersoverview_legendMenu").style.display = "none";
