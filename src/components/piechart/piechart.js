@@ -59,6 +59,8 @@ class PieChart extends Component {
   
   myPieChart(){
 
+    // Based on Laxmikanta Nayak's visualization on bl.ocks.org: https://bl.ocks.org/laxmikanta415/dc33fe11344bf5568918ba690743e06f?fbclid=IwAR3kPNqXn8VkZM3rgxHlY0dO64IyM3V-nO83jIRd2xw_QPzqo7_mp_Oh3Oc
+
     var data = this.state.courses_data;
     var idTeacher = this.state.active_teacher;
     var idCourse = this.state.active_course;
@@ -230,8 +232,6 @@ class PieChart extends Component {
                         value = teacherHoursArray[labelsPositions[j]];
                     }
                 }
-
-                //console.log({ label: label, value: value });
 
                 return { label: label, value: value }
             });

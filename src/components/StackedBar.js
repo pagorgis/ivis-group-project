@@ -37,7 +37,6 @@ import {Row, Dropdown} from "react-bootstrap";
 
 function StackedBar(inputId) {
     const id=inputId.value;
-    console.log(Teachers[id-1]);
     const tearcherData=Teachers[id-1];
 
     var penalty=0;
@@ -70,7 +69,6 @@ function StackedBar(inputId) {
     .offset(stackOffsetDiverging)
     (data);
 
-    console.log(series)
 
 var svg = select("#mySVG"),
     margin = {top: 30, right: 20, bottom: 60, left: 30},

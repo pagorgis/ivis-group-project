@@ -31,11 +31,6 @@ class App extends Component {
     this.clickedReset = this.clickedReset.bind(this);
   }
 
-  componentDidMount() {
-    //console.log(this.state.courses_data);
-    //console.log(this.state.teachers_data);
-  }
-
   clickedInfo() {
     this.setState({infotab: true})
   }

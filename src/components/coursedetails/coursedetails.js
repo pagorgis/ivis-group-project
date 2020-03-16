@@ -20,7 +20,6 @@ class CourseDetails extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.active_course !== prevState.active_course) {
-      console.log("Trigger1");
       this.setState({ active_course: this.props.active_course });
       if(this.state.active_course !== null) {
         d3.select("#my_dataviz").selectAll("*").remove();
@@ -29,7 +28,6 @@ class CourseDetails extends Component {
       }
     }
     if (this.props.active_teacher !== prevState.active_teacher) {
-      console.log("Trigger2");
       this.setState({ active_teacher: this.props.active_teacher });
       if(this.state.active_course !== null) {
         d3.select("#my_dataviz").selectAll("*").remove();

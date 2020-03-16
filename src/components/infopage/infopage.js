@@ -21,7 +21,7 @@ class InfoPage extends Component {
           <h1>Background</h1>
           
           <div className="video-container">
-            <iframe className="video" src="https://player.vimeo.com/video/398055870" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            <iframe className="video" src="https://player.vimeo.com/video/398055870" frameBorder="0" allow="autoplay; fullscreen" allowFullScreen></iframe>
           </div>
 
             <p>When working with this project we designed and implemented visual mappings and structures based on the insights in the course Information Visualization
@@ -125,7 +125,7 @@ class InfoPage extends Component {
                 <Card.Title><b>Leo Bergqvist</b></Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">UX design, Presentation, Front-end</Card.Subtitle>
                 <Card.Text>
-                  Responsible for icicle visual structure on teacher page, presenting work and involved in UX design of tool  
+                  Responsible for icicle visual structure on teacher page, presenting work and involved in UX design of tool.
                 </Card.Text>
                 <Card.Link href="mailto:leo.bergqvist@hotmail.se">Mail</Card.Link>
                 <Card.Link href="https://github.com/LeoBergqvist/">GitHub</Card.Link>
