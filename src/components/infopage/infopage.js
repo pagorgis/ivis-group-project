@@ -19,7 +19,11 @@ class InfoPage extends Component {
           
         <div className="infotext">
           <h1>Background</h1>
-          <h2><i>(Insert video iframe here if we do a video)</i></h2>
+          
+          <div className="video-container">
+            <iframe className="video" src="https://player.vimeo.com/video/398055870" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          </div>
+
             <p>When working with this project we designed and implemented visual mappings and structures based on the insights in the course Information Visualization
                at KTH to end up with the website you’re using right now. It’s primarily created as a tool for the director of studies Jarmo Laaksolahti and other teachers 
                at KTH to give overview of the courses and teachers.</p>
