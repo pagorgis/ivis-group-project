@@ -135,17 +135,16 @@ class InfoPage extends Component {
               </Card.Body>
             </Card>
             <Card className="profile-cards" style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="https://sarangglobaltours.com/wp-content/uploads/2014/02/team.png" />
+              <Card.Img variant="top" src={require("../../photos/yt.png")} />
               <Card.Body>
                 <Card.Title><b>Yutong Xu</b></Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">Front-end</Card.Subtitle>
                 <Card.Text>
-                  Some quick example text to build on the card title and make up the bulk of
-                  the card's content.
+                  Responsible for creating the creating visualization of the course detail, including course profile and time allocation of each course, which is visualized with a stacked bar.
                 </Card.Text>
-                <Card.Link href="#">Mail</Card.Link>
-                <Card.Link href="#">GitHub</Card.Link>
-                <Card.Link href="#">LinkedIn</Card.Link>
+                <Card.Link href="mailto:yutongx@kth.se">Mail</Card.Link>
+                <Card.Link href="https://github.com/Mangobiubiu">GitHub</Card.Link>
+                <Card.Link href="https://www.linkedin.com/in/yutong-xu-03035219b/">LinkedIn</Card.Link>
               </Card.Body>
             </Card>
           </Row>
